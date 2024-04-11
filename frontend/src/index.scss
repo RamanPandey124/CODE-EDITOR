@@ -1,0 +1,22 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+
+@mixin xlg {
+    @media only screen and (max-width: 960px) {
+        @content;
+    }
+}
+@mixin xl {
+    @media only screen and (max-width: 1150px) {
+        @content;
+    }
+}
+
+@mixin xxl {
+    @media only screen and (max-width: 1400px) {
+        @content;
+    }
+}

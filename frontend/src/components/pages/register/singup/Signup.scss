@@ -1,0 +1,11 @@
+@import "../../../../index.scss";
+
+
+.signbtn {
+    width: 100%;
+    padding: .5rem;
+    border-radius: 5px;
+    background: linear-gradient(120deg, blue, #007ACC, blue);
+    font-size: 1rem;
+    font-weight: 700;
+}

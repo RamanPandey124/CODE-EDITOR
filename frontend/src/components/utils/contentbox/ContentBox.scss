@@ -1,0 +1,52 @@
+@import "../../../index.scss";
+
+.ContentBox-main {
+    // border: 2px solid;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+
+    h1 {
+        font-size: 7rem;
+        @include xl{
+            font-size: 5rem;
+        }
+    }
+
+    p {
+        font-size: 1.7rem;
+        margin: 1rem 0 4rem;
+        font-weight: 600;
+        @include xxl {
+            width: 80%;
+        }
+        @include xl{
+            font-size: 1.2rem;
+        }
+    }
+
+    .bgImage {
+        // border: 2px solid;
+        position: absolute;
+        right: 0;
+        bottom: -50px;
+        height: 150%;
+        width: 150%;
+        border-radius: 50%;
+        z-index: -1;
+        overflow: hidden;
+        filter: blur(2px);
+
+        img {
+            height: 100%;
+            width: 100%;
+        }
+    }
+}

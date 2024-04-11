@@ -1,0 +1,12 @@
+.login-main {
+    height: 100vh;
+    display: flex;
+    flex-wrap: wrap;
+
+    .login-form {
+        display: flex;
+        flex: 1;
+        justify-content: center;
+        align-items: center;
+    }
+}

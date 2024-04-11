@@ -1,0 +1,63 @@
+@import "../../../index.scss";
+
+.form-main {
+    // border: 2px solid red;
+    position: absolute;
+    padding: 4rem;
+    z-index: 2;
+
+    @mixin bubble {
+        border-radius: 50%;
+        position: absolute;
+        z-index: -1;
+    }
+
+    .bubbleA {
+        height: 12rem;
+        width: 12rem;
+        top: 0;
+        left: 0;
+        @include bubble();
+    }
+
+    .bubbleB {
+        height: 9rem;
+        width: 9rem;
+        bottom: 0;
+        right: 0;
+        @include bubble();
+    }
+
+    .form-sub {
+        box-shadow: #AFAFAF 0 0 10px 1px;
+        // box-shadow: black 0 0 10px 1px;
+        padding: 4rem 2rem;
+        border-radius: 5px;
+        min-height: 60vh;
+        backdrop-filter: blur(10px);
+        width: 22rem;
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        @include xl {
+            width: 18rem;
+        }
+
+        @include xlg {
+            width: 15rem;
+        }
+
+        h3 {
+            font-size: 3rem;
+        }
+
+        p {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+    }
+
+}
