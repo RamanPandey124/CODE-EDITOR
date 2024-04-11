@@ -1,12 +1,7 @@
+@import "../../../index.scss";
+
 .register-main {
     height: 100vh;
     display: flex;
     flex-wrap: wrap;
-
-    .register-form {
-        display: flex;
-        flex: 1;
-        justify-content: center;
-        align-items: center;
-    }
 }

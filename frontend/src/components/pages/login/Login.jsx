@@ -1,6 +1,7 @@
 
 import { loginContent } from '../../../assets/refrences/UiText'
 import ContentBox from '../../utils/contentbox/ContentBox'
+import DragBox from '../../utils/dragBox/DragBox'
 import './Login.scss'
 import LoginForm from './loginForm/LoginForm'
 
@@ -11,9 +12,9 @@ const Login = () => {
         <div className={`login-main`}>
             <ContentBox content={loginContent} />
 
-            <div className={`login-form`}>
+            <DragBox>
                 <LoginForm />
-            </div>
+            </DragBox>
         </div>
     )
 }

@@ -1,10 +1,23 @@
 @import "../../../index.scss";
 
+
 .form-main {
     // border: 2px solid red;
-    position: absolute;
+    position: relative;
     padding: 4rem;
     z-index: 2;
+
+    @include xl {
+        padding: 3rem;
+    }
+
+    @include smd {
+        padding: 4rem 2rem;
+    }
+
+    @include sm {
+        padding: 1rem;
+    }
 
     @mixin bubble {
         border-radius: 50%;
@@ -17,7 +30,19 @@
         width: 12rem;
         top: 0;
         left: 0;
-        @include bubble();
+        @include bubble;
+
+        @include xl {
+            height: 9rem;
+            width: 9rem;
+        }
+
+        @include sm {
+            height: 7rem;
+            width: 7rem;
+            top: -1rem;
+            left: -.2rem;
+        }
     }
 
     .bubbleB {
@@ -26,6 +51,16 @@
         bottom: 0;
         right: 0;
         @include bubble();
+
+        @include xl {
+            height: 6.75rem;
+            width: 6.75rem;
+        }
+
+        @include sm {
+            height: 4rem;
+            width: 4rem;
+        }
     }
 
     .form-sub {
@@ -33,7 +68,6 @@
         // box-shadow: black 0 0 10px 1px;
         padding: 4rem 2rem;
         border-radius: 5px;
-        min-height: 60vh;
         backdrop-filter: blur(10px);
         width: 22rem;
         z-index: 10;
@@ -47,6 +81,26 @@
 
         @include xlg {
             width: 15rem;
+        }
+
+        @include lg {
+            width: 22rem;
+        }
+
+        @include md {
+            width: 15rem;
+        }
+
+        @include smd {
+            padding: 2rem 1rem 4rem 1rem;
+        }
+
+        @include ssm {
+            width: 13rem;
+        }
+
+        @include nano {
+            width: 11rem;
         }
 
         h3 {
