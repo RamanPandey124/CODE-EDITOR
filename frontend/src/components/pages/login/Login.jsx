@@ -11,7 +11,6 @@ const Login = () => {
     return (
         <div className={`login-main`}>
             <ContentBox content={loginContent} />
-
             <DragBox>
                 <LoginForm />
             </DragBox>

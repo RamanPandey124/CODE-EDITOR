@@ -28,11 +28,13 @@
         @include lg {
             width: 80%;
         }
-        @include md{
+
+        @include md {
             width: 100%;
             font-size: 4rem;
         }
-        @include sm{
+
+        @include sm {
             font-size: 3rem;
         }
     }
@@ -53,7 +55,8 @@
         @include lg {
             width: 60%;
         }
-        @include sm{
+
+        @include sm {
             width: 80%;
             font-size: 1rem;
         }
@@ -69,21 +72,24 @@
         border-radius: 50%;
         z-index: -1;
         overflow: hidden;
-        filter: blur(2px);
+        filter: blur(3px);
 
         @include lg {
             bottom: 30px;
             width: 120%;
             height: 150%;
         }
-        @include smd{
+
+        @include smd {
             width: 130%;
             height: 120%;
         }
-        @include sm{
+
+        @include sm {
             width: 150%;
         }
-        @include ssm{
+
+        @include ssm {
             width: 170%;
         }
 

@@ -1,13 +1,17 @@
-import { useFormik } from 'formik'
 import './LoginForm.scss'
+import { useFormik } from 'formik'
 import FormBox from '../../../utils/formbox/FormBox'
 import InputBox from '../../../utils/inputbox/InputBox'
 import { logFormContent } from '../../../../assets/refrences/UiText'
 import { LoginFormSchema } from '../../../../assets/yup files/RegisterYup'
-
+import { useSelector, useDispatch } from 'react-redux'
+import { userLogin } from '../../../../redux/actions/authAction'
+import useSignIn from 'react-auth-kit/hooks/useSignIn';
 
 const LoginForm = () => {
-
+    const auth = useSelector((state) => state.auth)
+    const dispatch = useDispatch()
+    const signIn = useSignIn()
 
 
     const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
@@ -17,8 +21,8 @@ const LoginForm = () => {
         },
         validationSchema: LoginFormSchema,
         onSubmit: (values, action) => {
-            console.log(values)
-            action.resetForm()
+            dispatch(userLogin(values))
+            // action.resetForm()
         }
     })
 

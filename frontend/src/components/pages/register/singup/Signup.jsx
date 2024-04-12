@@ -4,11 +4,12 @@ import InputBox from '../../../utils/inputbox/InputBox'
 import { signUpSchema } from '../../../../assets/yup files/RegisterYup'
 import FormBox from '../../../utils/formbox/FormBox'
 import { signupContent } from '../../../../assets/refrences/UiText'
-
+import { useSelector, useDispatch } from 'react-redux'
+import { userSignup } from '../../../../redux/actions/authAction'
 
 const Signup = () => {
-
-
+    const { loading } = useSelector((state) => state.auth)
+    const dispatch = useDispatch()
 
     const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
         initialValues: {
@@ -18,8 +19,8 @@ const Signup = () => {
             confirmPassword: ''
         },
         validationSchema: signUpSchema,
-        onSubmit: (values, action) => {
-            console.log(values)
+        onSubmit: async (values, action) => {
+            dispatch(userSignup(values))
             action.resetForm()
         }
     })

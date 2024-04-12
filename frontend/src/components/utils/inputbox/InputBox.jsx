@@ -25,7 +25,6 @@ const InputBox = ({ name, type, placeholder, values, onChange, onBlur, errors, t
                     onChange={onChange}
                     onBlur={onBlur}
                     autoComplete="off"
-                    className={`light`}
                 />
                 {hide && <span
                     className={`eye`}

@@ -64,9 +64,9 @@
     }
 
     .form-sub {
-        box-shadow: #AFAFAF 0 0 10px 1px;
+        box-shadow: white 0 0 10px 1px;
         // box-shadow: black 0 0 10px 1px;
-        padding: 4rem 2rem;
+        padding: 3rem 2rem;
         border-radius: 5px;
         backdrop-filter: blur(10px);
         width: 22rem;
@@ -92,7 +92,7 @@
         }
 
         @include smd {
-            padding: 2rem 1rem 4rem 1rem;
+            padding: 1.5rem 1rem;
         }
 
         @include ssm {
@@ -110,6 +110,19 @@
         p {
             font-size: 1rem;
             margin-bottom: 1rem;
+        }
+
+        .hrline {
+            width: 100%;
+            margin: 1rem 0;
+        }
+
+        .navigate {
+            text-align: center;
+
+            a {
+                text-decoration: none;
+            }
         }
 
     }
