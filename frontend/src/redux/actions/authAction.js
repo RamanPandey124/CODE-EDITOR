@@ -28,19 +28,22 @@ export const userSignup = createAsyncThunk(
         }
     }
 )
-
 export const userLogin = createAsyncThunk(
     'auth/login',
     async (loginData, { rejectWithValue }) => {
-        // console.log('loginData =>', loginData)
         try {
-            const { data } = await API.post('/auth/login', loginData)
-            console.log('data =>', data)
+            const { values, signIn } = loginData
+            const { data } = await API.post('/auth/login', values)
             if (data.success) {
                 toast.success(data.msg)
+                signIn({
+                    auth: {
+                        token: data.token
+                    }
+                })
                 setTimeout(() => {
                     window.location.replace('/')
-                }, 1000);
+                }, (1000));
             }
         }
         catch (error) {
@@ -51,6 +54,7 @@ export const userLogin = createAsyncThunk(
                 return rejectWithValue(msg)
             }
             else {
+                toast.error(error.message)
                 return rejectWithValue(error.message)
             }
         }

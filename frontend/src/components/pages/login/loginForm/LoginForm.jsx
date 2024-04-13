@@ -6,7 +6,8 @@ import { logFormContent } from '../../../../assets/refrences/UiText'
 import { LoginFormSchema } from '../../../../assets/yup files/RegisterYup'
 import { useSelector, useDispatch } from 'react-redux'
 import { userLogin } from '../../../../redux/actions/authAction'
-import useSignIn from 'react-auth-kit/hooks/useSignIn';
+import useSignIn from 'react-auth-kit/hooks/useSignIn'
+
 
 const LoginForm = () => {
     const auth = useSelector((state) => state.auth)
@@ -21,8 +22,9 @@ const LoginForm = () => {
         },
         validationSchema: LoginFormSchema,
         onSubmit: (values, action) => {
-            dispatch(userLogin(values))
-            // action.resetForm()
+            const params = { values, signIn }
+            dispatch(userLogin(params))
+            action.resetForm()
         }
     })
 
