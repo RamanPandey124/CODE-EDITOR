@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         require: true,
     },
-    Teams: [
+    teams: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Team",

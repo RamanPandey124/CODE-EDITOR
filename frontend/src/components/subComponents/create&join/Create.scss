@@ -1,0 +1,20 @@
+.create {
+    // border: 2px solid;
+    width: 15rem;
+    padding: 5rem 2rem;
+    background-color: #8080803a;
+
+    .createbtn {
+        border: 2px solid;
+        border-radius: 2rem;
+        padding: 2rem;
+        text-align: center;
+        background: linear-gradient(70deg, #007acc89, blue, #040461);
+        margin: 5rem 0;
+        font-size: 1.5rem;
+
+        &:hover {
+            background: linear-gradient(70deg, blue, #6f6fc8);
+        }
+    }
+}

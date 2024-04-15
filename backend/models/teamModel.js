@@ -3,7 +3,8 @@ const mongoose = require("mongoose")
 const teamSchema = new mongoose.Schema({
     name: {
         type: String,
-        require: true
+        require: true,
+        unique: true
     },
     password: {
         type: String,

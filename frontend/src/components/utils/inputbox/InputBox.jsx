@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 import './InputBox.scss'
+import { useSelector } from "react-redux";
 
 const InputBox = ({ name, type, placeholder, values, onChange, onBlur, errors, touched }) => {
-
+    const { inputBorder } = useSelector((state) => state.theme)
     const [hide, setHide] = useState(false)
     const [isPass, setPass] = useState(false)
 
@@ -25,6 +26,7 @@ const InputBox = ({ name, type, placeholder, values, onChange, onBlur, errors, t
                     onChange={onChange}
                     onBlur={onBlur}
                     autoComplete="off"
+                    className={inputBorder}
                 />
                 {hide && <span
                     className={`eye`}

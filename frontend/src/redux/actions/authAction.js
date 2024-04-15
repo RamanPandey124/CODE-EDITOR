@@ -28,6 +28,7 @@ export const userSignup = createAsyncThunk(
         }
     }
 )
+
 export const userLogin = createAsyncThunk(
     'auth/login',
     async (loginData, { rejectWithValue }) => {
@@ -44,6 +45,29 @@ export const userLogin = createAsyncThunk(
                 setTimeout(() => {
                     window.location.replace('/')
                 }, (1000));
+            }
+        }
+        catch (error) {
+            // console.log('error =>', error)
+            if (error.response && error.response.data.msg) {
+                const msg = error.response.data.msg
+                toast.error(msg)
+                return rejectWithValue(msg)
+            }
+            else {
+                toast.error(error.message)
+                return rejectWithValue(error.message)
+            }
+        }
+    }
+)
+export const userProfile = createAsyncThunk(
+    'auth/profile',
+    async (i, { rejectWithValue }) => {
+        try {
+            const { data } = await API.get('/auth/profile')
+            if (data.success) {
+                return data.user
             }
         }
         catch (error) {

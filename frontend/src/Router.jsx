@@ -3,10 +3,14 @@ import Login from './components/pages/login/Login'
 import Register from './components/pages/register/Register'
 import Home from './components/pages/home/Home'
 import AuthOutlet from '@auth-kit/react-router/AuthOutlet'
-import PublicRoute from './components/utils/routes/PublicRoute.jsx';
+import PublicRoute from './services/PublicRoute'
+import Header from './components/subComponents/header/Header'
+
+
 const Router = () => {
     return (
         <BrowserRouter>
+            <Header />
             <Routes>
                 <Route path='/login' element={
                     <PublicRoute><Login /></PublicRoute>} />

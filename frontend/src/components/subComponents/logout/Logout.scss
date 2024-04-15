@@ -1,0 +1,11 @@
+.logout {
+    border: 2px solid;
+    padding: .5vh 1rem;
+    background-color: #ff5900e4;
+    border-radius: 1rem;
+    cursor: pointer;
+
+    &:hover {
+        background-color: red;
+    }
+}

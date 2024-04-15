@@ -1,10 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { userLogin, userSignup } from '../actions/authAction'
+import { userLogin, userProfile, userSignup } from '../actions/authAction'
 
 const initialState = {
     loading: false,
     error: null,
-    msg: null
+    msg: null,
+    userDetails: {},
+    userTeams: []
 }
 
 const authSlice = createSlice({
@@ -33,6 +35,21 @@ const authSlice = createSlice({
         builder.addCase(userLogin.rejected, (state, { payload }) => {
             state.loading = false
         })
+
+        // get-profile
+        builder.addCase(userProfile.pending, (state) => {
+            state.loading = true
+        })
+        builder.addCase(userProfile.fulfilled, (state, { payload }) => {
+            const { _id, username, email, teams } = payload[0]
+            state.loading = false
+            state.userDetails = { _id, username, email }
+            state.userTeams = teams
+        })
+        builder.addCase(userProfile.rejected, (state, { payload }) => {
+            state.loading = false
+        })
+
     }
 })
 

@@ -21,29 +21,29 @@ function App() {
 export default App
 */
 
+// import AuthProvider from 'react-auth-kit'
+// import createStore from 'react-auth-kit/createStore';
+// import { Provider } from 'react-redux'
+// import reduxStore from './redux/reduxStore'
+
+// const store = createStore({
+//   authName: '_auth',
+//   authType: 'localstorage'
+// })
+
 import './App.scss'
-import AuthProvider from 'react-auth-kit'
-import createStore from 'react-auth-kit/createStore';
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import Router from './Router'
-import { Provider } from 'react-redux'
-import reduxStore from './redux/reduxStore'
+import { useSelector } from 'react-redux';
 
-const store = createStore({
-  authName: '_auth',
-  authType: 'localstorage'
-})
 
 function App() {
+  const { theme } = useSelector((state) => state.theme)
   return (
-    <div className='App'>
-      <AuthProvider store={store}>
-        <Provider store={reduxStore}>
-          <ToastContainer />
-          <Router />
-        </Provider>
-      </AuthProvider>
+    <div className={`App ${theme}`}>
+      <ToastContainer />
+      <Router />
     </div>
   )
 }

@@ -1,8 +1,32 @@
 .App {
-    background-color: black;
-    // color: #AFAFAF;
-    color: white;
+    min-height: 95vh;
+}
 
-    // background-color: white;
-    // color: black;
+// light theme
+.light {
+    background-color: white;
+    color: black;
+}
+
+.light-shadow {
+    box-shadow: black 0 0 10px 1px;
+}
+
+.light-input {
+    color: black;
+}
+
+
+// dark theme
+.dark {
+    background-color: black;
+    color: white;
+}
+
+.dark-shadow {
+    box-shadow: white 0 0 10px 1px;
+}
+
+.dark-input {
+    color: white;
 }

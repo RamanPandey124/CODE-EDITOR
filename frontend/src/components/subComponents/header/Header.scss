@@ -1,0 +1,43 @@
+.header {
+    position: fixed;
+    top: 0;
+    z-index: 12;
+    width: 100%;
+    height: 5vh;
+    min-height: 2rem;
+    display: flex;
+
+    .headerTitle {
+        padding-left: 1rem;
+        width: 50%;
+        display: flex;
+        align-items: center;
+
+        .headerIcon {
+            height: 5vh;
+            width: 5vh;
+            min-height: 2rem;
+            min-width: 2rem;
+        }
+
+        h2 {
+            margin-left: .5rem;
+        }
+    }
+
+    .headerFeature {
+        display: flex;
+        flex: 1;
+        justify-content: end;
+        padding-right: 2rem;
+        align-items: center;
+    }
+}
+
+.headerBg {
+    background: linear-gradient(120deg, #007ACC, blue, #007ACC);
+}
+
+.headerBgY {
+    background: linear-gradient(120deg, #FFD700, #FFA500);
+}

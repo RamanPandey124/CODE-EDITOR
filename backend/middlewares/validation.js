@@ -20,3 +20,25 @@ exports.loginValidator = [
     }),
     check('password', 'Password is required').not().isEmpty()
 ]
+
+exports.CreateTeamValidator = [
+    check('name', 'Name is required').not().isEmpty(),
+    check('password', 'Password contains atleast 6 characters').isStrongPassword({
+        minLength: 6,
+        minUppercase: 0,
+        minLowercase: 0,
+        minNumbers: 0,
+        minSymbols: 0
+    })
+]
+
+exports.JoinTeamValidator = [
+    check('_id', 'Id is required').not().isEmpty(),
+    check('password', 'Password contains atleast 6 characters').isStrongPassword({
+        minLength: 6,
+        minUppercase: 0,
+        minLowercase: 0,
+        minNumbers: 0,
+        minSymbols: 0
+    })
+]

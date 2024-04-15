@@ -1,11 +1,13 @@
 import { Link } from 'react-router-dom'
 import './FormBox.scss'
+import { useSelector } from 'react-redux'
 
 const FormBox = ({ children, content }) => {
+    const { shadow } = useSelector((state) => state.theme)
     return (
         <div className='form-main'>
             <div className={`bubbleA`} style={{ background: content.bubbleA }}></div>
-            <div className={`form-sub`}>
+            <div className={`form-sub ${shadow}`}>
                 <h3>{content.title}</h3>
                 <p>{content.subTitle}</p>
 
