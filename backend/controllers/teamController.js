@@ -1,0 +1,166 @@
+const { validationResult } = require("express-validator")
+const bcrypt = require("bcrypt")
+const mongoose = require('mongoose');
+const { ObjectId } = mongoose.Types;
+const userModel = require("../models/userModel");
+const teamModel = require("../models/teamModel");
+const generateAccessToken = require("../utils/generateToken")
+const jwt = require("jsonwebtoken")
+
+
+const createTeam = async (req, res) => {
+    try {
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            return res.status(400).json({
+                success: false,
+                msg: 'Errors',
+                errors: errors.array()
+            })
+        }
+        const { name, password } = req.body
+        const userId = req.user._id
+        // console.log(name, password, userId)
+
+        const hashPassword = await bcrypt.hash(password, 10)
+        const teamData = new teamModel({
+            name,
+            password: hashPassword,
+            users: [userId]
+        })
+        const team = await teamData.save()
+
+        await userModel.findByIdAndUpdate(
+            userId,
+            { $push: { teams: team._id } },
+            { new: true }
+        )
+
+        const teamToken = await generateAccessToken({ teamId: team._id })
+
+        return res.status(200).json({
+            success: true,
+            msg: "Registered successfully",
+            teamToken
+        })
+
+    }
+    catch (error) {
+        return res.status(400).json({
+            success: false,
+            msg: error.message
+        })
+    }
+}
+
+const joinTeam = async (req, res) => {
+    try {
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            return res.status(400).json({
+                success: false,
+                msg: 'Errors',
+                errors: errors.array()
+            })
+        }
+
+        const { _id, password } = req.body
+        const userId = req.user._id
+
+        let team = await teamModel.findById(_id)
+        const isPassword = await bcrypt.compare(password, team.password)
+        if (!isPassword) {
+            return res.status(400).json({
+                success: false,
+                msg: "Id and Password is incorrect"
+            })
+        }
+
+        const teamToken = await generateAccessToken({ teamId: team._id })
+
+        if (team.users.includes(userId)) {
+            return res.status(200).json({
+                success: true,
+                msg: "Already Joined",
+                teamToken
+            })
+        }
+
+        await teamModel.findByIdAndUpdate(
+            _id,
+            { $push: { users: userId } },
+            { new: true }
+        )
+        await userModel.findByIdAndUpdate(
+            userId,
+            { $push: { teams: team._id } },
+            { new: true }
+        )
+
+        return res.status(200).json({
+            success: true,
+            msg: "Joined successfully",
+            teamToken
+        })
+    }
+    catch (error) {
+        return res.status(400).json({
+            success: false,
+            msg: error.message
+        })
+    }
+}
+
+const getTeam = async (req, res) => {
+    try {
+        const { teamToken } = req.query
+        const { teamId } = jwt.verify(teamToken, process.env.ACCESS_TOKEN_SECRET)
+
+        const team = await teamModel.aggregate([
+            {
+                $match: {
+                    _id: new ObjectId(teamId)
+                }
+            }, {
+                $unwind: "$users"
+            }, {
+                $lookup: {
+                    from: "users",
+                    localField: "users",
+                    foreignField: "_id",
+                    as: "userData"
+                }
+            }, {
+                $unwind: "$userData"
+            }, {
+                $group: {
+                    _id: "$_id",
+                    TeamName: { $first: "$name" },
+                    users: {
+                        $push: {
+                            _id: "$userData._id",
+                            name: "$userData.name"
+                        }
+                    }
+                }
+            }
+        ])
+        return res.status(200).json({
+            success: true,
+            msg: "Team data!",
+            team:team[0]
+        })
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            msg: error.message
+        })
+    }
+
+}
+
+module.exports = {
+    createTeam,
+    joinTeam,
+    getTeam
+}

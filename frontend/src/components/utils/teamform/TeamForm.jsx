@@ -6,15 +6,16 @@ import { createTeamSchema, joinTeamSchema } from '../../../assets/yup files/Regi
 import { MdCancel } from "react-icons/md";
 import { remove } from '../../../redux/slices/inputSlice.js';
 import { useEffect, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { createTeam, joinTeam } from '../../../redux/actions/teamAction.js';
+import useSignIn from 'react-auth-kit/hooks/useSignIn'
 
 
 const TeamForm = () => {
     const { theme } = useSelector((state) => state.theme)
     const { _id, title, value, cPwd, placeholder } = useSelector((state) => state.input)
     const dispatch = useDispatch()
-
+    const signIn = useSignIn()
 
     const { values, errors, touched, handleBlur, handleChange, handleSubmit, setValues } = useFormik({
         initialValues: {
@@ -26,10 +27,7 @@ const TeamForm = () => {
         onSubmit: (values, action) => {
             const { _id, password } = values
             if (cPwd) {
-                const createData = {
-                    name: _id,
-                    password
-                }
+                const createData = { name: _id, password }
                 dispatch(createTeam(createData))
             }
             else {

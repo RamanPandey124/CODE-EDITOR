@@ -23,9 +23,10 @@ mongoose.connect(process.env.MONGO_URL).then(() => {
 app.get("/", (req, res) => {
     res.send('jai shree ram')
 })
-app.use('/auth',require('./routes/authRoute'))
+app.use('/auth', require('./routes/authRoute'))
+app.use('/team', require('./routes/teamRoute'))
 
 const port = process.env.PORT || 1100
-server.listen(port,()=>{
+server.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`)
 })

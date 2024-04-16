@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { createTeam, joinTeam } from '../actions/teamAction'
+import { createTeam, getTeam, joinTeam } from '../actions/teamAction'
 
 const initialState = {
     loading: false,
-    teamToken: null
+    teamData: null,
+    error: null
 }
 
 const teamSlice = createSlice({
@@ -29,10 +30,22 @@ const teamSlice = createSlice({
         })
         builder.addCase(joinTeam.fulfilled, (state, { payload }) => {
             state.loading = false
-            state.teamToken = payload.teamToken
         })
         builder.addCase(joinTeam.rejected, (state, { payload }) => {
             state.loading = false
+        })
+
+        // get team
+        builder.addCase(getTeam.pending, (state) => {
+            state.loading = true
+        })
+        builder.addCase(getTeam.fulfilled, (state, { payload }) => {
+            state.loading = false
+            state.teamData = payload
+        })
+        builder.addCase(getTeam.rejected, (state, { payload }) => {
+            state.loading = false
+            state.error = payload
         })
 
 

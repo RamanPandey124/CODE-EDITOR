@@ -1,0 +1,24 @@
+.editor {
+    display: flex;
+    border: 2px solid;
+
+    .editor-info {
+        border: 2px solid;
+        width: 30%;
+        padding: 4rem 2rem;
+
+        .userBox {
+            display: flex;
+            column-gap: 2rem;
+
+            .users {
+                margin-top: 2rem;
+                width: 4rem;
+                height: 4rem;
+                border: 2px solid;
+                padding: 0 1rem;
+                background-color: blue;
+            }
+        }
+    }
+}

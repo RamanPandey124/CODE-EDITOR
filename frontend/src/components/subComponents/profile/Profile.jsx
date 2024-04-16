@@ -28,7 +28,7 @@ const Profile = () => {
         <div className={`profile`}>
             <div className='userDetails'>
                 <img src={userImage} />
-                <h1>{userDetails.username}</h1>
+                <h1>{userDetails.name}</h1>
                 <h3>{userDetails.email}</h3>
                 <p>Team joined : {userTeams.length}</p>
             </div>

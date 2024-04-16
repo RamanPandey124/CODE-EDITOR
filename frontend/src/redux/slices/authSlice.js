@@ -41,9 +41,9 @@ const authSlice = createSlice({
             state.loading = true
         })
         builder.addCase(userProfile.fulfilled, (state, { payload }) => {
-            const { _id, username, email, teams } = payload[0]
+            const { _id, name, email, teams } = payload
             state.loading = false
-            state.userDetails = { _id, username, email }
+            state.userDetails = { _id, name, email }
             state.userTeams = teams
         })
         builder.addCase(userProfile.rejected, (state, { payload }) => {
