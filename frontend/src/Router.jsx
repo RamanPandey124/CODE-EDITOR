@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import AuthOutlet from '@auth-kit/react-router/AuthOutlet'
 import PublicRoute from './services/PublicRoute'
-import ProtectedRoute from './services/ProtectedRoute'
+// import ProtectedRoute from './services/ProtectedRoute'
 import Header from './components/singleUse/Header.jsx';
 import Signup from './components/pages/Signup.jsx';
 import Login from './components/pages/Login.jsx';
