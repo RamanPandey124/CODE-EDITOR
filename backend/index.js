@@ -1,6 +1,9 @@
 // dotenv configuration
 require('dotenv').config()
 
+console.log('index')
+
+
 // server setup
 const app = require("express")()
 const { createServer } = require("http")
