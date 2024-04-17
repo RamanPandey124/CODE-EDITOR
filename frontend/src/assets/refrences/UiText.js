@@ -18,8 +18,8 @@ export const signupContent = {
     bubbleA: "linear-gradient(100deg, #011255, #007ACC)",
     bubbleB: "linear-gradient(0deg, #011255, #007ACC)",
     navigateText: "Already Registered ? ",
-    navigateTo:"Login",
-    navigateColor:"#007ACC"
+    navigateTo: "Login",
+    navigateColor: "#007ACC"
 }
 
 export const logFormContent = {
@@ -28,6 +28,6 @@ export const logFormContent = {
     bubbleA: "linear-gradient(100deg, #FFD700, #FFA500)",
     bubbleB: "linear-gradient(0deg, #FFD700, #FFA500)",
     navigateText: "Don't have an account ? ",
-    navigateTo:"Signup",
-    navigateColor:"gold"
+    navigateTo: "Signup",
+    navigateColor: "#007ACC"
 }

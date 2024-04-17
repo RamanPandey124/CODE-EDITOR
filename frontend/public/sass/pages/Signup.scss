@@ -1,0 +1,8 @@
+@import "@/index.scss";
+
+
+.signup-main {
+    margin-top: 4rem;
+    min-height: 90vh;
+    @include flexCenter
+}

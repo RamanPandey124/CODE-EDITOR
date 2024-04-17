@@ -3,27 +3,36 @@
     padding: 0;
 }
 
+@mixin flexCenter{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 @mixin nano {
     @media only screen and (max-width: 280px) {
         @content;
     }
 }
+
 @mixin ssm {
     @media only screen and (max-width: 320px) {
         @content;
     }
 }
+
 @mixin sm {
     @media only screen and (max-width: 370px) {
         @content;
     }
 }
+
 @mixin smd {
     @media only screen and (max-width: 430px) {
         @content;
     }
 }
+
 @mixin md {
     @media only screen and (max-width: 550px) {
         @content;

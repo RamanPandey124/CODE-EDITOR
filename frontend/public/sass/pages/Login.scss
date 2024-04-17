@@ -1,0 +1,7 @@
+@import "@/index.scss";
+
+.login-main {
+    margin-top: 4rem;
+    height: 90vh;
+    @include flexCenter
+}

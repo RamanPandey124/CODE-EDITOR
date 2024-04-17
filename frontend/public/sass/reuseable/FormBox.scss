@@ -1,0 +1,78 @@
+@import "@/index.scss";
+
+
+.form-main {
+    // border: 2px solid red;
+    position: relative;
+    padding: 2rem 4rem;
+    z-index: 2;
+
+    @include smd {
+        padding: 2rem;
+    }
+
+    @include sm {
+        padding: 1rem;
+    }
+
+
+    .form-sub {
+        padding: 3rem 2rem;
+        border-radius: 5px;
+        backdrop-filter: blur(10px);
+        width: 22rem;
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        @include md {
+            width: 15rem;
+        }
+
+        @include smd {
+            padding: 1.5rem 1rem;
+        }
+
+        @include ssm {
+            width: 13rem;
+        }
+
+        @include nano {
+            width: 11rem;
+        }
+
+        h3 {
+            font-size: 3rem;
+        }
+
+        p {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .signbtn {
+            width: 100%;
+            padding: .5rem;
+            border-radius: 5px;
+            background: linear-gradient(120deg, blue, #007ACC, blue);
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .hrline {
+            width: 100%;
+            margin: 1rem 0;
+        }
+
+        .navigate {
+            text-align: center;
+
+            a {
+                text-decoration: none;
+            }
+        }
+
+    }
+
+}

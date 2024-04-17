@@ -26,6 +26,9 @@ app.get("/", (req, res) => {
 app.use('/auth', require('./routes/authRoute'))
 app.use('/team', require('./routes/teamRoute'))
 
+// socket connection
+require('./sockets/socket')(server)
+
 const port = process.env.PORT || 1100
 server.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`)

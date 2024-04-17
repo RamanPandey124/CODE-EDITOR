@@ -1,0 +1,79 @@
+.home {
+    margin-top: 4rem;
+    display: flex;
+    flex-wrap: wrap;
+
+    .profile {
+        width: 40rem;
+        background: #80808041;
+
+        .userdetails {
+            padding: 4rem 2rem;
+            text-align: center;
+
+            h1 {
+                font-size: 5rem;
+                color: blue;
+            }
+
+            p {
+                font-size: 2rem;
+                margin: 1rem 0;
+            }
+
+            .editbtn {
+                margin: 0 auto;
+                border: 1px solid;
+                width: 6rem;
+                padding: .4rem;
+                border-radius: .3rem;
+                margin-bottom: 1rem;
+
+                &:hover {
+                    background-color: #64647e;
+                }
+            }
+        }
+
+        .newTeam {
+            text-align: center;
+            padding-bottom: 2.3rem;
+            display: flex;
+            justify-content: center;
+            column-gap: 3rem;
+
+            .teambtn {
+                padding: 1rem;
+                font-size: 1.4rem;
+                border-radius: 1.2rem;
+                width: 8rem;
+                box-shadow: rgba(128, 128, 128, 0.379) 2px 1px 1px 1px;
+
+                &:hover {
+                    color: yellow;
+                }
+
+
+            }
+
+            .createbtn {
+                width: 100%;
+                padding: .5rem 0;
+                border-radius: 1rem;
+                background: linear-gradient(100deg, #007acc, blue);
+
+                &:hover {
+                    background: gray;
+                }
+            }
+
+            .createTeam {
+                background: linear-gradient(50deg, green, #05ef0567, #e6ee90);
+            }
+
+            .joinTeam {
+                background: linear-gradient(50deg, #f00af0f6, #ef0582fb, #e6ee90);
+            }
+        }
+    }
+}
