@@ -17,12 +17,12 @@ const Router = () => {
                     <PublicRoute><Login /></PublicRoute>} />
                 <Route path='/signup' element={
                     <PublicRoute><Register /></PublicRoute>} />
-                {/* <Route element={<AuthOutlet fallbackPath='/login' />}>
+                <Route element={<AuthOutlet fallbackPath='/login' />}>
                     <Route path='/' element={<Home />} />
                     <Route path='/editor' element={
                         <ProtectedRoute><Editor /></ProtectedRoute>} />
-                </Route> */}
-                <Route path='*' element={<Login />} />
+                </Route>
+                <Route path='*' element={<Home />} />
             </Routes>
         </BrowserRouter>
     )
