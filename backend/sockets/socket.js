@@ -1,19 +1,28 @@
 const { Server } = require('socket.io')
+const teamModel = require("../models/teamModel")
 
-module.exports = (server) => {
+const socket = (server) => {
     const io = new Server(server, {
         connectionStateRecovery: {},
         cors: {
-            origin: 'http://localhost:5173/'
+            origin: 'http://localhost:5173'
         }
     })
 
     io.on('connection', (socket) => {
-        console.log('user connected....')
+        // console.log('user connected....')
+        // console.log(socket.handshake.query.auth)
+
+        socket.on('isTeamExist', async (name) => {
+            console.log(name)
+            const isName = await teamModel.find({ name })
+            socket.emit('teamFound', isName.length)
+        })
 
         socket.on('disconnect', () => {
-            console.log('user disconnected...')
+            // console.log('user disconnected...')
         })
     })
-
 }
+
+module.exports = socket

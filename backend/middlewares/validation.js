@@ -33,7 +33,7 @@ exports.CreateTeamValidator = [
 ]
 
 exports.JoinTeamValidator = [
-    check('_id', 'Id is required').not().isEmpty(),
+    check('name', 'name is required').not().isEmpty(),
     check('password', 'Password contains atleast 6 characters').isStrongPassword({
         minLength: 6,
         minUppercase: 0,

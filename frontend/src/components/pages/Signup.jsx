@@ -6,6 +6,7 @@ import FormBox from '../reuseable/FormBox';
 import InputBox from '../reuseable/InputBox';
 import { useState } from 'react';
 import { userSignup } from "@/services/AxiosApi"
+import Loader from '../singleUse/Loader';
 
 
 
@@ -72,12 +73,11 @@ const Signup = () => {
                         errors={errors.confirmPassword}
                         touched={touched.confirmPassword}
                     />
-                    <input
+                    <button
                         className={`signbtn`}
                         disabled={loading}
                         type='submit'
-                        value={loading ? 'loading...' : 'signup'}
-                    />
+                    >{loading ? <Loader /> : 'signup'}</button>
                 </form>
             </FormBox>
         </div>

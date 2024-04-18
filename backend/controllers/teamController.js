@@ -63,11 +63,18 @@ const joinTeam = async (req, res) => {
                 errors: errors.array()
             })
         }
-
-        const { _id, password } = req.body
+        const { name, password } = req.body
         const userId = req.user._id
 
-        let team = await teamModel.findById(_id)
+        let team = await teamModel.find({ name })
+        if (!team.length) {
+            return res.status(400).json({
+                success: false,
+                msg: "Team not exists!"
+            })
+        }
+        team = team[0]
+
         const isPassword = await bcrypt.compare(password, team.password)
         if (!isPassword) {
             return res.status(400).json({
@@ -114,6 +121,13 @@ const joinTeam = async (req, res) => {
 const getTeam = async (req, res) => {
     try {
         const { teamToken } = req.query
+        if (!teamToken) {
+            return res.status(400).json({
+                success: false,
+                msg: 'teamToken is needed'
+            })
+        }
+
         const { teamId } = jwt.verify(teamToken, process.env.ACCESS_TOKEN_SECRET)
 
         const team = await teamModel.aggregate([
@@ -148,7 +162,7 @@ const getTeam = async (req, res) => {
         return res.status(200).json({
             success: true,
             msg: "Team data!",
-            team:team[0]
+            team: team[0]
         })
     } catch (error) {
         return res.status(400).json({

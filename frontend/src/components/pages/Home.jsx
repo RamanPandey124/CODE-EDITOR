@@ -1,10 +1,12 @@
-import '/public/sass/pages/Home.scss';
-import API from '@/services/API';
-import { toast } from 'react-toastify'
+import "public/sass/pages/Home.scss"
 import { useEffect, useState } from 'react'
 import Profile from '@/assets/images/profile.png'
-import NewTeam from '../singleUse/NewTeam';
 import { userProfile } from '@/services/AxiosApi';
+import socket from "@/sockets/Socket";
+import CreateTeam from "../singleUse/CreateTeam";
+import JoinNew from "../singleUse/JoinNew";
+import Loader from "../singleUse/Loader";
+import Teams from "../singleUse/Teams";
 
 
 const Home = () => {
@@ -16,11 +18,19 @@ const Home = () => {
 
     useEffect(() => {
         userData()
+        socket.connect()
+        // socket.on("connect", () => {
+        //     console.log('connected to server')
+        // })
     }, [])
+
+    if (user == null) {
+        return <Loader position={'absolute'} all={true} />
+    }
 
     return (
         <div className='home'>
-            {user != null && <div className='profile'>
+            <div className='profile'>
                 <div className='userdetails'>
                     <img src={Profile} />
                     <h1>{user.name}</h1>
@@ -29,20 +39,11 @@ const Home = () => {
                     <hr />
                 </div>
                 <div className='newTeam'>
-                    <NewTeam
-                        title="Create new"
-                        className="teambtn createTeam"
-                        cpwd={true}
-                    />
-                    <NewTeam
-                        title="Join team"
-                        className="teambtn joinTeam"
-                    />
+                    <CreateTeam className="teambtn createTeam" />
+                    <JoinNew className="teambtn joinTeam" />
                 </div>
-            </div>}
-            <div className='teams'>
-
             </div>
+            <Teams teamList={user.teams} />
         </div>
     );
 };

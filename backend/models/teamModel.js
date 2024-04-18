@@ -16,7 +16,10 @@ const teamSchema = new mongoose.Schema({
             ref: "User",
         },
     ],
-    code: String
+    code:{
+        type:String,
+        default:''
+    }
 })
 
 

@@ -69,7 +69,10 @@ export const createTeam = async (values) => {
         const { data } = await API.post('/team/create-team', values)
         if (data.success) {
             toast.success(data.msg)
-            console.log(data)
+            window.localStorage.setItem('teamToken', data.teamToken)
+            setTimeout(() => {
+                window.location.replace('/code-editor')
+            }, 1000)
         }
 
     } catch (error) {
@@ -87,7 +90,28 @@ export const joinTeam = async (values) => {
         const { data } = await API.post('/team/join-team', values)
         if (data.success) {
             toast.success(data.msg)
-            return data
+            window.localStorage.setItem('teamToken', data.teamToken)
+            setTimeout(() => {
+                window.location.replace('/code-editor')
+            }, 1000)
+        }
+
+    } catch (error) {
+        if (error.response && error.response.data.msg) {
+            console.log(error.response)
+            toast.error(error.response.data.msg)
+        }
+        else {
+            toast.error(error.message)
+        }
+    }
+}
+
+export const getTeam = async (teamToken) => {
+    try {
+        const { data } = await API.get(`/team/get-team?teamToken=${teamToken}`)
+        if (data.success) {
+            return data.team
         }
 
     } catch (error) {

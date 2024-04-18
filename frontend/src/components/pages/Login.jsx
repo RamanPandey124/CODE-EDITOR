@@ -7,6 +7,7 @@ import { LoginFormSchema } from '@/assets/yup files/RegisterYup'
 import useSignIn from 'react-auth-kit/hooks/useSignIn'
 import { useState } from 'react';
 import { userLogin } from "@/services/AxiosApi"
+import Loader from '../singleUse/Loader';
 
 const Login = () => {
     const signIn = useSignIn()
@@ -20,7 +21,7 @@ const Login = () => {
         validationSchema: LoginFormSchema,
         onSubmit: async (values, action) => {
             setLoading(true)
-            await userLogin(values,signIn)
+            await userLogin(values, signIn)
             setLoading(false)
             action.resetForm()
         }
@@ -51,12 +52,14 @@ const Login = () => {
                         errors={errors.password}
                         touched={touched.password}
                     />
-                    <input
+                    <button
                         className={`signbtn`}
                         disabled={loading}
                         type='submit'
-                        value={loading ? 'loading...' : 'login'}
-                    />
+                    >
+                        {loading ? <Loader /> : 'login'}
+                    </button>
+
                 </form>
             </FormBox>
         </div>

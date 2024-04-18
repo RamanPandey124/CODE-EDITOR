@@ -1,57 +1,65 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Modal from "./Modal"
 import InputBox from './../reuseable/InputBox.jsx';
 import { useFormik } from "formik";
-import { createTeamSchema, joinTeamSchema } from "@/assets/yup files/RegisterYup.js";
-import { createTeam, joinTeam } from "@/services/AxiosApi"
-import API from "@/services/API";
+import { createTeamSchema } from "@/assets/yup files/RegisterYup.js";
+import { createTeam } from "@/services/AxiosApi"
+import socket from "@/sockets/Socket";
+import Loader from "./Loader";
 
-const NewTeam = ({ title, className, cpwd = false }) => {
+const CreateTeam = ({ className }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [loading, setLoading] = useState(false)
+    const [isTeamExist, setTeamExist] = useState(false)
 
     const nameChange = e => {
-        console.log(e.target.value)
+        socket.emit('isTeamExist', e.target.value)
+        socket.on('teamFound', (isTeam) => { isTeam == 1 ? setTeamExist(true) : setTeamExist(false) })
     }
 
-    const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
-        initialValues: {
-            name: '',
-            password: '',
-            confirmPassword: ''
-        },
-        validationSchema: cpwd ? createTeamSchema : joinTeamSchema,
+    const initialValues = {
+        name: '',
+        password: '',
+        confirmPassword: ''
+    }
+    const { values, errors, touched, handleBlur, handleChange, handleSubmit, setValues } = useFormik({
+        initialValues,
+        validationSchema: createTeamSchema,
         onSubmit: async (values, action) => {
             action.resetForm()
             setLoading(true)
-            await cpwd ? createTeam(values) : joinTeam(values)
+            await createTeam(values)
+            setTeamExist(false)
             setLoading(false)
         }
     })
 
-
+    useEffect(() => {
+        return () => {
+            setValues(initialValues)
+            setTeamExist(false)
+        }
+    }, [isModalOpen])
 
     return (
         <div >
             <div className={className} onClick={() => setIsModalOpen(true)}>
-                <p >{title}</p>
+                <p >Create new</p>
             </div>
 
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
                 <form onSubmit={handleSubmit}>
-                    <h2>{title}</h2>
+                    <h2>Create new team</h2>
                     <InputBox
                         name={'name'}
                         placeholder={'Team name'}
                         values={values.name}
-                        onChange={(e) => {
-                            handleChange(e);
-                            cpwd && nameChange(e)
-                        }}
+                        onChange={(e) => { handleChange(e); nameChange(e) }}
                         onBlur={handleBlur}
                         errors={errors.name}
                         touched={touched.name}
                     />
+                    {isTeamExist && <p style={{ color: 'red', position: 'relative', bottom: '12px', height: '10px', width: '12rem' }}>team name already exist, try another</p>}
                     <InputBox
                         type={'password'}
                         name={'password'}
@@ -62,7 +70,7 @@ const NewTeam = ({ title, className, cpwd = false }) => {
                         errors={errors.password}
                         touched={touched.password}
                     />
-                    {cpwd && <InputBox
+                    <InputBox
                         type={'password'}
                         name={'confirmPassword'}
                         placeholder={'Confirm Password'}
@@ -71,16 +79,18 @@ const NewTeam = ({ title, className, cpwd = false }) => {
                         onBlur={handleBlur}
                         errors={errors.confirmPassword}
                         touched={touched.confirmPassword}
-                    />}
+                    />
                     <button
                         className={`createbtn`}
-                        disabled={loading}
+                        disabled={loading || isTeamExist}
                         type='submit'
-                    >{loading ? 'loading...' : title}</button>
+                    >
+                        {loading ? <Loader /> : 'create'}
+                    </button>
                 </form>
             </Modal>
         </div >
     )
 }
 
-export default NewTeam
+export default CreateTeam
