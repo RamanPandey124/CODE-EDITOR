@@ -13,7 +13,6 @@ const CodeEditor = () => {
         return <Navigate to={'/'} replace />
     }
     const [team, setTeam] = useState(null)
-    // console.log(team)
 
     const teamFunc = async () => {
         setTeam(await getTeam(teamToken))
@@ -46,7 +45,8 @@ const CodeEditor = () => {
                         <div className="actionbtn leavebtn"><CiLogout className="btnIcon"/> Leave</div>
                     </div>
                 </div>
-                <CodeContainer/>
+
+                <CodeContainer team={team} />
             </div>}
         </div>
     )

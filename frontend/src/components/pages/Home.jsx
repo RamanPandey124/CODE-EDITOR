@@ -19,9 +19,6 @@ const Home = () => {
     useEffect(() => {
         userData()
         socket.connect()
-        // socket.on("connect", () => {
-        //     console.log('connected to server')
-        // })
     }, [])
 
     if (user == null) {

@@ -75,6 +75,7 @@ const joinTeam = async (req, res) => {
         }
         team = team[0]
 
+
         const isPassword = await bcrypt.compare(password, team.password)
         if (!isPassword) {
             return res.status(400).json({
@@ -84,7 +85,6 @@ const joinTeam = async (req, res) => {
         }
 
         const teamToken = await generateAccessToken({ teamId: team._id })
-
         if (team.users.includes(userId)) {
             return res.status(200).json({
                 success: true,
@@ -94,7 +94,7 @@ const joinTeam = async (req, res) => {
         }
 
         await teamModel.findByIdAndUpdate(
-            _id,
+            team._id,
             { $push: { users: userId } },
             { new: true }
         )
@@ -155,7 +155,8 @@ const getTeam = async (req, res) => {
                             _id: "$userData._id",
                             name: "$userData.name"
                         }
-                    }
+                    },
+                    code: { $first: "$code" }
                 }
             }
         ])
