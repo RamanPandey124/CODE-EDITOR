@@ -23,9 +23,9 @@ const socket = (server) => {
             socket.join(teamId)
         })
 
-        socket.on('newCode', async (code, teamId) => {
+        socket.on('newCode', async ({ code, name }, teamId) => {
             await teamModel.findByIdAndUpdate(teamId, { $set: { code } })
-            io.to(teamId).emit('newCode', code)
+            io.to(teamId).emit('newCode', { code, name })
         })
 
         socket.on('disconnect', () => {

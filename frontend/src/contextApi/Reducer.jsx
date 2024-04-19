@@ -1,13 +1,14 @@
 export const intialState = {
-    name:'raman'
+    user: null,
+    team: null
 }
 
 export const counterReducer = (state, action) => {
     switch (action.type) {
-        case 'INCREMENT':
-            return { count: state.count + 1 };
-        case 'DECREMENT':
-            return { count: state.count - 1 };
+
+        case 'USER':
+            return state.user = action.value;
+
         default:
             return state;
     }

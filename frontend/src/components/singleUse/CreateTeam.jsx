@@ -6,11 +6,14 @@ import { createTeamSchema } from "@/assets/yup files/RegisterYup.js";
 import { createTeam } from "@/services/AxiosApi"
 import socket from "@/sockets/Socket";
 import Loader from "./Loader";
+import { useNavigate } from "react-router-dom";
+
 
 const CreateTeam = ({ className }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [loading, setLoading] = useState(false)
     const [isTeamExist, setTeamExist] = useState(false)
+    const navigate = useNavigate()
 
     const nameChange = e => {
         socket.emit('isTeamExist', e.target.value)
@@ -28,7 +31,8 @@ const CreateTeam = ({ className }) => {
         onSubmit: async (values, action) => {
             action.resetForm()
             setLoading(true)
-            await createTeam(values)
+            const isCreate = await createTeam(values)
+            { isCreate && navigate('/code-editor') }
             setTeamExist(false)
             setLoading(false)
         }

@@ -1,11 +1,10 @@
 import "public/sass/pages/CodeEditor.scss"
 import { getTeam } from "@/services/AxiosApi"
 import { useEffect, useState } from "react"
-import { Navigate } from "react-router-dom"
+import { Navigate, useNavigate } from "react-router-dom"
 import { IoChatboxEllipsesSharp } from "react-icons/io5";
 import { CiLogout } from "react-icons/ci";
 import CodeContainer from "../singleUse/CodeContainer";
-
 
 const CodeEditor = () => {
     const teamToken = window.localStorage.getItem('teamToken')
@@ -13,10 +12,17 @@ const CodeEditor = () => {
         return <Navigate to={'/'} replace />
     }
     const [team, setTeam] = useState(null)
+    const navigate = useNavigate()
 
     const teamFunc = async () => {
         setTeam(await getTeam(teamToken))
     }
+
+    const leaveTeam = async () => {
+        window.localStorage.removeItem('teamToken')
+        navigate('/')
+    }
+
 
 
     useEffect(() => {
@@ -41,8 +47,8 @@ const CodeEditor = () => {
                         </div>
                     </div>
                     <div className="team-action">
-                        <div className="actionbtn chatbtn"><IoChatboxEllipsesSharp className="btnIcon"/> Chat</div>
-                        <div className="actionbtn leavebtn"><CiLogout className="btnIcon"/> Leave</div>
+                        <div className="actionbtn chatbtn"><IoChatboxEllipsesSharp className="btnIcon" /> Chat</div>
+                        <div className="actionbtn leavebtn" onClick={leaveTeam}><CiLogout className="btnIcon" /> Leave</div>
                     </div>
                 </div>
 

@@ -5,9 +5,12 @@ import { useFormik } from "formik";
 import { joinTeamSchema } from "@/assets/yup files/RegisterYup.js";
 import { joinTeam } from "@/services/AxiosApi"
 import Loader from "../singleUse/Loader";
+import { useNavigate } from "react-router-dom";
+
 
 const JoinTeam = ({ isModalOpen, onClose, name = "" }) => {
     const [loading, setLoading] = useState(false)
+    const navigate = useNavigate()
 
 
     const initialValues = {
@@ -20,7 +23,8 @@ const JoinTeam = ({ isModalOpen, onClose, name = "" }) => {
         onSubmit: async (values, action) => {
             action.resetForm()
             setLoading(true)
-            await joinTeam(values)
+            const isJoin = await joinTeam(values)
+            { isJoin && navigate('/code-editor') }
             setLoading(false)
         }
     })

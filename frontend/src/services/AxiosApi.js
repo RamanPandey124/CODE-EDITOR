@@ -70,9 +70,7 @@ export const createTeam = async (values) => {
         if (data.success) {
             toast.success(data.msg)
             window.localStorage.setItem('teamToken', data.teamToken)
-            setTimeout(() => {
-                window.location.replace('/code-editor')
-            }, 1000)
+            return data.success
         }
 
     } catch (error) {
@@ -82,6 +80,7 @@ export const createTeam = async (values) => {
         else {
             toast.error(error.message)
         }
+        return false
     }
 }
 
@@ -91,9 +90,7 @@ export const joinTeam = async (values) => {
         if (data.success) {
             toast.success(data.msg)
             window.localStorage.setItem('teamToken', data.teamToken)
-            setTimeout(() => {
-                window.location.replace('/code-editor')
-            }, 1000)
+            return data.success
         }
 
     } catch (error) {
@@ -104,6 +101,7 @@ export const joinTeam = async (values) => {
         else {
             toast.error(error.message)
         }
+        return false
     }
 }
 

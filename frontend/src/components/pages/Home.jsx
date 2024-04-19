@@ -1,5 +1,5 @@
 import "public/sass/pages/Home.scss"
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import Profile from '@/assets/images/profile.png'
 import { userProfile } from '@/services/AxiosApi';
 import socket from "@/sockets/Socket";
@@ -7,19 +7,23 @@ import CreateTeam from "../singleUse/CreateTeam";
 import JoinNew from "../singleUse/JoinNew";
 import Loader from "../singleUse/Loader";
 import Teams from "../singleUse/Teams";
+import { CounterContext } from "@/contextApi/Context";
 
 
 const Home = () => {
     const [user, setUser] = useState(null)
+    const { dispatch } = useContext(CounterContext)
 
     async function userData() {
-        setUser(await userProfile())
+        const userData = await userProfile()
+        setUser(userData)
+        dispatch({ type: 'USER', value: userData })
     }
 
     useEffect(() => {
         userData()
-        socket.connect()
     }, [])
+    socket.connect()
 
     if (user == null) {
         return <Loader position={'absolute'} all={true} />
