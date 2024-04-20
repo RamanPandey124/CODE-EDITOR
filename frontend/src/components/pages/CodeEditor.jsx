@@ -32,7 +32,7 @@ const CodeEditor = () => {
     return (
         <div className="code-editor">
             {team && <div className="editor-container">
-                <div className="team-details">
+                {/* <div className="team-details">
                     <div className="team-name">
                         <h1>{team.TeamName}</h1>
                         <p>team id {team._id}</p>
@@ -50,7 +50,7 @@ const CodeEditor = () => {
                         <div className="actionbtn chatbtn"><IoChatboxEllipsesSharp className="btnIcon" /> Chat</div>
                         <div className="actionbtn leavebtn" onClick={leaveTeam}><CiLogout className="btnIcon" /> Leave</div>
                     </div>
-                </div>
+                </div> */}
 
                 <CodeContainer team={team} />
             </div>}

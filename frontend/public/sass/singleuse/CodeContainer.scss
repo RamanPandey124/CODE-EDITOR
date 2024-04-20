@@ -1,0 +1,13 @@
+.code-container {
+    flex: 1;
+    .monaco{
+        z-index: 1;
+    }
+    .coderName{
+        width: 10rem;
+        background-color: rgba(172, 255, 47, 0.452);
+        z-index: 2;
+        text-align: center;
+        position: relative;
+    }
+}

@@ -1,7 +1,6 @@
 .code-editor {
-    // border: 2px solid;
+    border: 2px solid;
     margin-top: 4rem;
-    flex: 1;
 
     .editor-container {
         height: 100%;
@@ -80,13 +79,7 @@
                     background: linear-gradient(40deg, rgb(253, 0, 0), salmon);
                 }
             }
-        }
-
-        .code-container {
-            flex: 1;
-            // border: 2px solid;
-        }
+        }      
     }
-
 
 }
