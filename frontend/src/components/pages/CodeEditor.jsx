@@ -5,6 +5,7 @@ import { Navigate, useNavigate } from "react-router-dom"
 import { IoChatboxEllipsesSharp } from "react-icons/io5";
 import { CiLogout } from "react-icons/ci";
 import CodeContainer from "../singleUse/CodeContainer";
+import LiveBlock from "../singleUse/LiveBlock";
 
 const CodeEditor = () => {
     const teamToken = window.localStorage.getItem('teamToken')
@@ -52,7 +53,8 @@ const CodeEditor = () => {
                     </div>
                 </div>
 
-                <CodeContainer team={team} />
+                {/* <CodeContainer team={team} /> */}
+                {team && <LiveBlock id={team._id} />}
             </div>}
         </div>
     )
