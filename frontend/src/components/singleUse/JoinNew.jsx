@@ -1,13 +1,14 @@
 import { useState } from "react";
 import JoinTeam from "../reuseable/JoinTeam"
+import { MdOutlineJoinLeft } from "react-icons/md";
 
-const JoinNew = ({ className }) => {
+const JoinNew = ({ className, title }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     return (
         <div>
             <div className={className} onClick={() => setIsModalOpen(true)}>
-                <p>Join team</p>
+                <p><MdOutlineJoinLeft /> {title}</p>
             </div>
             <JoinTeam isModalOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
         </div>

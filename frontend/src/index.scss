@@ -3,7 +3,7 @@
     padding: 0;
 }
 
-@mixin flexCenter{
+@mixin flexCenter {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -38,6 +38,11 @@
         @content;
     }
 }
+@mixin lmd {
+    @media only screen and (max-width: 670px) {
+        @content;
+    }
+}
 
 @mixin lg {
     @media only screen and (max-width: 850px) {
@@ -52,7 +57,7 @@
 }
 
 @mixin xl {
-    @media only screen and (max-width: 1150px) {
+    @media only screen and (max-width: 1155px) {
         @content;
     }
 }

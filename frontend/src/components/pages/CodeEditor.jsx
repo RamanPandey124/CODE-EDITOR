@@ -1,11 +1,12 @@
 import "public/sass/pages/CodeEditor.scss"
 import { getTeam } from "@/services/AxiosApi"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { Navigate, useNavigate } from "react-router-dom"
 import { IoChatboxEllipsesSharp } from "react-icons/io5";
 import { CiLogout } from "react-icons/ci";
 import CodeContainer from "../singleUse/CodeContainer";
 import LiveBlock from "../singleUse/LiveBlock";
+import { CounterContext } from "@/contextApi/Context";
 
 const CodeEditor = () => {
     const teamToken = window.localStorage.getItem('teamToken')
@@ -14,9 +15,15 @@ const CodeEditor = () => {
     }
     const [team, setTeam] = useState(null)
     const navigate = useNavigate()
+    const { dispatch } = useContext(CounterContext)
 
     const teamFunc = async () => {
-        setTeam(await getTeam(teamToken))
+        const data = await getTeam(teamToken)
+        setTeam(data?.team)
+        if (data?.user) {
+            dispatch({ type: 'USER', value: data.user })
+        }
+
     }
 
     const leaveTeam = async () => {
@@ -53,8 +60,8 @@ const CodeEditor = () => {
                     </div>
                 </div>
 
-                {/* <CodeContainer team={team} /> */}
                 {team && <LiveBlock id={team._id} />}
+                {/* <CodeContainer team={team} /> */}
             </div>}
         </div>
     )

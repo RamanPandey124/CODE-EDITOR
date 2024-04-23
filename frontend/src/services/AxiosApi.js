@@ -109,7 +109,7 @@ export const getTeam = async (teamToken) => {
     try {
         const { data } = await API.get(`/team/get-team?teamToken=${teamToken}`)
         if (data.success) {
-            return data.team
+            return { team: data.team, user: data.user }
         }
 
     } catch (error) {

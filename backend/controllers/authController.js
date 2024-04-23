@@ -77,7 +77,7 @@ const loginController = async (req, res) => {
             })
         }
 
-        const token = await generateAccessToken({ _id: userData._id })
+        const token = await generateAccessToken({ _id: userData._id },'1d')
         return res.status(200).json({
             success: true,
             msg: "Login successfully!",

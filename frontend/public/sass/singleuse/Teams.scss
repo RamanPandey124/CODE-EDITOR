@@ -1,24 +1,76 @@
+@import "@/index.scss";
+
 .Teams-container {
-    flex: 1;
-    padding: 2rem;
+    // border: 2px solid;
+    padding: 2rem 4rem;
+    background: linear-gradient(120deg, #060510, #29011600);
 
-    .team-search {
+    @include xlg {
+        padding: 1rem;
+    }
 
-        // border: 2px solid;
-        input {
-            background-color: inherit;
-            color: inherit;
-            padding: 1rem;
-            border: 2px solid;
-            border-radius: 10px;
-            float: right;
-            font-size: 1.2rem;
+    .teams-Header {
+        display: flex;
+        margin-bottom: 2rem;
+        position: sticky;
+        top: 3.6rem;
+        background-color: #060510;
+        padding-bottom:1rem ;
+
+        @include md {
+            display: block;
+        }
+        @include sm{
+            top: 3rem;
+        }
+
+
+
+        .teamTitle {
+            // border: 2px solid;
+            width: 10rem;
+        }
+
+        .teamSearch {
+            flex: 1;
+            display: flex;
+            justify-content: end;
+
+            .faSearch {
+                height: 1.2rem;
+                width: 1.2rem;
+                position: relative;
+                top: .8rem;
+
+                @include lmd {
+                    top: .6rem;
+                }
+            }
+
+            .faMinus {
+                left: 11.4rem;
+
+                @include lmd {
+                    left: 8.3rem;
+                }
+            }
+
+            input {
+                background-color: inherit;
+                color: inherit;
+                padding: .5rem .7rem;
+                border: 2px solid;
+                border-radius: 10px;
+
+                @include lmd {
+                    padding: .3rem;
+                    width: 8rem;
+                    height: 1.5rem;
+                }
+            }
         }
     }
 
-    h1 {
-        margin: 2rem 0;
-    }
 
     .teams-main {
         // border: 2px solid;
@@ -29,21 +81,27 @@
         justify-content: center;
 
         .team-box {
-            text-align: center;
-            height: 7rem;
-            width: 10rem;
             padding: 1rem 2rem;
-
+            height: 8rem;
+            width: 20rem;
             background: linear-gradient(150deg, #80808038, rgba(128, 128, 128, 0.49), rgb(104, 110, 118), rgba(0, 0, 255, 0.31));
             border-radius: 10px;
+            @include lg{
+                width: 100%;
+            }
+
+            .fontAwesome {
+                height: 2rem;
+                width: 2rem;
+            }
 
             hr {
-                margin-bottom: 2rem;
+                margin-bottom: 1rem;
             }
 
-            .joinbtn {
-                margin: 1rem 0;
-            }
+            
+
+           
         }
     }
 }

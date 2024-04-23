@@ -5,9 +5,7 @@ import { useSelector } from 'react-redux'
 const FormBox = ({ children, content }) => {
     const { shadow } = useSelector((state) => state.theme)
     return (
-        <div className='form-main'>
-            {/* <div className={`bubbleA`} style={{ background: content.bubbleA }}></div> */}
-            <div className={`form-sub ${shadow}`}>
+            <div className={`form-main ${shadow}`}>
                 <h3>{content.title}</h3>
                 <p>{content.subTitle}</p>
 
@@ -18,9 +16,6 @@ const FormBox = ({ children, content }) => {
                     <Link to={`/${content.navigateTo}`} style={{ color: content.navigateColor }}>{content.navigateTo}</Link>
                 </p>
             </div>
-            {/* <div className={`bubbleB `} style={{ background: content.bubbleB }}></div> */}
-
-        </div>
     )
 }
 

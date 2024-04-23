@@ -8,6 +8,7 @@ import JoinNew from "../singleUse/JoinNew";
 import Loader from "../singleUse/Loader";
 import Teams from "../singleUse/Teams";
 import { CounterContext } from "@/contextApi/Context";
+import ScrollBox from "../reuseable/ScrollBox";
 
 
 const Home = () => {
@@ -17,7 +18,9 @@ const Home = () => {
     async function userData() {
         const userData = await userProfile()
         setUser(userData)
-        dispatch({ type: 'USER', value: userData })
+        if (userData !== 'error') {
+            dispatch({ type: 'USER', value: userData })
+        }
     }
 
     useEffect(() => {
@@ -31,20 +34,23 @@ const Home = () => {
 
     return (
         <div className='home'>
-            <div className='profile'>
-                <div className='userdetails'>
+            <div className='userdetails'>
+                <div className="profileImg">
                     <img src={Profile} />
-                    <h1>{user.name}</h1>
-                    <p>email : {user.email}</p>
-                    <div className='editbtn'>Edit profile</div>
-                    <hr />
                 </div>
-                <div className='newTeam'>
-                    <CreateTeam className="teambtn createTeam" />
-                    <JoinNew className="teambtn joinTeam" />
+                <div className="profiles">
+                    <div className="profileNames">
+                        <h1>{user.name}</h1>
+                        <p>email : {user.email}</p>
+                    </div>
+                    <div className='newTeam'>
+                        <CreateTeam className="teambtn createTeam" title={'Create new'} />
+                        <JoinNew className="teambtn joinTeam" title={'Join team'} />
+                    </div>
                 </div>
             </div>
             <Teams teamList={user.teams} />
+            <ScrollBox />
         </div>
     );
 };

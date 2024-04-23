@@ -36,7 +36,7 @@ const createTeam = async (req, res) => {
             { new: true }
         )
 
-        const teamToken = await generateAccessToken({ teamId: team._id })
+        const teamToken = await generateAccessToken({ teamId: team._id }, '1yr')
 
         return res.status(200).json({
             success: true,
@@ -84,7 +84,7 @@ const joinTeam = async (req, res) => {
             })
         }
 
-        const teamToken = await generateAccessToken({ teamId: team._id })
+        const teamToken = await generateAccessToken({ teamId: team._id }, '1yr')
         if (team.users.includes(userId)) {
             return res.status(200).json({
                 success: true,
@@ -160,10 +160,12 @@ const getTeam = async (req, res) => {
                 }
             }
         ])
+        const user = await userModel.findById(req.user._id)
         return res.status(200).json({
             success: true,
             msg: "Team data!",
-            team: team[0]
+            team: team[0],
+            user: user
         })
     } catch (error) {
         return res.status(400).json({

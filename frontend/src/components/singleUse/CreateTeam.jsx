@@ -7,9 +7,10 @@ import { createTeam } from "@/services/AxiosApi"
 import socket from "@/sockets/Socket";
 import Loader from "./Loader";
 import { useNavigate } from "react-router-dom";
+import { MdCreateNewFolder } from "react-icons/md";
 
 
-const CreateTeam = ({ className }) => {
+const CreateTeam = ({ className, title }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [loading, setLoading] = useState(false)
     const [isTeamExist, setTeamExist] = useState(false)
@@ -48,7 +49,7 @@ const CreateTeam = ({ className }) => {
     return (
         <div >
             <div className={className} onClick={() => setIsModalOpen(true)}>
-                <p >Create new</p>
+                <p ><MdCreateNewFolder /> {title}</p>
             </div>
 
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>

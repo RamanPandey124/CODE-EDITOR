@@ -39,7 +39,7 @@ export default Editor
 function BlockNote({ doc, provider }) {
   const { state } = useContext(CounterContext)
   const random = Math.round(2 - 2 * Math.random())
-  const color = ["#FF3EA5", "#6420AA","#DC6B19"]
+  const color = ["#FF3EA5", "#6420AA", "#DC6B19"]
 
   const editor = useCreateBlockNote({
     collaboration: {
@@ -56,5 +56,10 @@ function BlockNote({ doc, provider }) {
     },
   });
 
-  return <BlockNoteView editor={editor} />;
+  /**
+   * @type { number[] }
+   */
+  let data
+
+  return <BlockNoteView editor={editor} className="BlockNoteView"/>;
 }
