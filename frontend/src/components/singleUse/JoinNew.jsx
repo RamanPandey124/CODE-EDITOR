@@ -8,7 +8,7 @@ const JoinNew = ({ className, title }) => {
     return (
         <div>
             <div className={className} onClick={() => setIsModalOpen(true)}>
-                <p><MdOutlineJoinLeft /> {title}</p>
+                <p><MdOutlineJoinLeft className="headerIcon" /> {title}</p>
             </div>
             <JoinTeam isModalOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
         </div>

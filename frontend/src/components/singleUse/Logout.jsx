@@ -18,9 +18,9 @@ const Logout = () => {
         }, 1000)
     }
     return (
-        <div className='toLogout dark-hover'>
+        <div className='toLogout actionBackground'>
             <div onClick={() => { setModalOpen(true) }}>
-                <p>logout <IoMdLogOut className='logoutIcon' /></p>
+                <p>logout <IoMdLogOut className='headerIcon' /></p>
             </div>
             <Modal isOpen={isModalOpen} onClose={() => setModalOpen(!isModalOpen)}>
                 <p>Do you want to logout</p>

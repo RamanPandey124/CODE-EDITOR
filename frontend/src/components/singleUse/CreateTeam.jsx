@@ -49,7 +49,7 @@ const CreateTeam = ({ className, title }) => {
     return (
         <div >
             <div className={className} onClick={() => setIsModalOpen(true)}>
-                <p ><MdCreateNewFolder /> {title}</p>
+                <p><MdCreateNewFolder className="headerIcon"/> {title}</p>
             </div>
 
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>

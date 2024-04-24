@@ -1,7 +1,7 @@
 @import "@/index.scss";
 
 .home {
-    margin-top: 3.7rem;
+    margin-top: 3rem;
     width: 100%;
     position: relative;
 
@@ -15,11 +15,11 @@
             padding: 1rem;
         }
 
-        @include lmd {
-            padding: 0;
-        }
+        // @include lmd {
+        //     padding: 0;
+        // }
 
-        @include smd {
+        @include md {
             display: block;
         }
 
@@ -35,11 +35,11 @@
                 width: 10rem;
             }
 
-            @include md {
-                width: 7rem;
-            }
+            // @include md {
+            //     width: 7rem;
+            // }
 
-            @include smd {
+            @include md {
                 width: 100%;
                 text-align: center;
 
@@ -64,7 +64,7 @@
                 margin-left: 1rem;
             }
 
-            @include smd {
+            @include md {
                 margin: 0;
                 text-align: center;
             }
@@ -92,77 +92,11 @@
 
                 p {
                     font-size: 1.7rem;
-                    // text-align: center;
-
-                    @include xl {
-                        // text-align: start;
-                        font-size: 1.4rem;
-                    }
 
                     @include lmd {
                         font-size: 1.2rem;
                     }
-
-                    @include smd {
-                        // text-align: center;
-                    }
                 }
-
-            }
-
-            .newTeam {
-                // border: 2px solid;
-                flex: 1;
-                display: flex;
-                flex-direction: column;
-                align-items: end;
-                justify-content: center;
-                row-gap: 2rem;
-
-                @include xl {
-                    flex-direction: row;
-                    column-gap: 2rem;
-                    margin-top: 1rem;
-                    justify-content: start;
-                }
-
-                @include smd {
-                    justify-content: center;
-                }
-
-                @include ssm {
-                    flex-direction: column;
-                    row-gap: .3rem;
-                }
-
-                .teambtn {
-                    padding: 1rem 2rem;
-                    width: 8rem;
-                    border-radius: 2rem 0 0 2rem;
-                    text-align: center;
-
-                    @include xl {
-                        border-radius: .5rem;
-                    }
-
-                    @include lg {
-                        width: 7rem;
-                        padding: 1rem;
-                    }
-
-                    @include lmd {
-                        padding: .3rem;
-                    }
-
-                    &:hover {
-                        background: gray;
-                    }
-
-
-                }
-
-
-
 
             }
         }

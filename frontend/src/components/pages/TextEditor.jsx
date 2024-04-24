@@ -1,14 +1,13 @@
-import "public/sass/pages/CodeEditor.scss"
+import "public/sass/pages/TextEditor.scss"
 import { getTeam } from "@/services/AxiosApi"
 import { useContext, useEffect, useState } from "react"
 import { Navigate, useNavigate } from "react-router-dom"
 import { IoChatboxEllipsesSharp } from "react-icons/io5";
 import { CiLogout } from "react-icons/ci";
-import CodeContainer from "../singleUse/CodeContainer";
 import LiveBlock from "../singleUse/LiveBlock";
 import { CounterContext } from "@/contextApi/Context";
 
-const CodeEditor = () => {
+const TextEditor = () => {
     const teamToken = window.localStorage.getItem('teamToken')
     if (!teamToken) {
         return <Navigate to={'/'} replace />
@@ -61,11 +60,11 @@ const CodeEditor = () => {
                 </div>
 
                 {team && <LiveBlock id={team._id} />}
-                {/* <CodeContainer team={team} /> */}
+            
             </div>}
         </div>
     )
 
 }
 
-export default CodeEditor
+export default TextEditor

@@ -13,15 +13,12 @@
         display: flex;
         margin-bottom: 2rem;
         position: sticky;
-        top: 3.6rem;
+        top: 3rem;
         background-color: #060510;
         padding-bottom:1rem ;
 
         @include md {
             display: block;
-        }
-        @include sm{
-            top: 3rem;
         }
 
 

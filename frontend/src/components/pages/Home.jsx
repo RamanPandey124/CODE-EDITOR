@@ -43,14 +43,9 @@ const Home = () => {
                         <h1>{user.name}</h1>
                         <p>email : {user.email}</p>
                     </div>
-                    <div className='newTeam'>
-                        <CreateTeam className="teambtn createTeam" title={'Create new'} />
-                        <JoinNew className="teambtn joinTeam" title={'Join team'} />
-                    </div>
                 </div>
             </div>
             <Teams teamList={user.teams} />
-            <ScrollBox />
         </div>
     );
 };
