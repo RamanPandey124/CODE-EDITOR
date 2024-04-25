@@ -197,6 +197,13 @@
                 right: 0;
                 padding: 4rem 1rem 0 0;
 
+                @include lg {
+                    position: static;
+                    display: block;
+                    box-shadow: none;
+                    padding: 0;
+                }
+
                 .dropMenu {
                     box-shadow: gray 0 0 2px 2px;
                     border-radius: 10px;
