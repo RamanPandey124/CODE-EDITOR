@@ -50,7 +50,7 @@ function BlockNote({ doc, provider }) {
 
       // Information for this user:
       user: {
-        name: state?.name,
+        name: state.user?.name,
         color: color[random],
       },
     },

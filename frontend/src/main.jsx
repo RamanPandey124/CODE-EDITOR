@@ -8,7 +8,7 @@ import { Provider } from 'react-redux'
 import reduxStore from './redux/reduxStore'
 import { BrowserRouter } from 'react-router-dom'
 import { CounterProvider } from './contextApi/Context.jsx'
-import Page from './components/singleUse/LiveBlock';
+import Page from './components/pages/LiveBlockEditor';
 
 const store = createStore({
   authName: '_auth',

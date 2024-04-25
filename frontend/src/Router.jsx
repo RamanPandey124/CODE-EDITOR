@@ -6,7 +6,8 @@ import Header from './components/singleUse/Header.jsx';
 import Signup from './components/pages/Signup.jsx';
 import Login from './components/pages/Login.jsx';
 import Home from './components/pages/Home.jsx';
-import TextEditor from './components/pages/TextEditor';
+import LiveBlockEditor from './components/pages/LiveBlockEditor';
+import TaskManager from './components/pages/TaskManager';
 
 
 
@@ -25,7 +26,8 @@ const Router = () => {
                 />
                 <Route element={<AuthOutlet fallbackPath='/login' />}>
                     <Route path='/' element={<Home />} />
-                    <Route path='/code-editor' element={<TextEditor />} />
+                    <Route path='/editor' element={<LiveBlockEditor />} />
+                    <Route path='/tasks' element={<TaskManager />} />
                 </Route>
             </Routes>
         </>

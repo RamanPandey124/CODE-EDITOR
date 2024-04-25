@@ -12,6 +12,7 @@ const Logout = () => {
 
     function handleLogout() {
         sighOut()
+        window.localStorage.removeItem('teamToken')
         toast.error('Logout')
         setTimeout(() => {
             window.location.reload()

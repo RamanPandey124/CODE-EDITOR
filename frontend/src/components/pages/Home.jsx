@@ -3,12 +3,9 @@ import { useContext, useEffect, useState } from 'react'
 import Profile from '@/assets/images/profile.png'
 import { userProfile } from '@/services/AxiosApi';
 import socket from "@/sockets/Socket";
-import CreateTeam from "../singleUse/CreateTeam";
-import JoinNew from "../singleUse/JoinNew";
 import Loader from "../singleUse/Loader";
 import Teams from "../singleUse/Teams";
 import { CounterContext } from "@/contextApi/Context";
-import ScrollBox from "../reuseable/ScrollBox";
 
 
 const Home = () => {

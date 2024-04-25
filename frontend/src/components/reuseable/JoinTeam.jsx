@@ -8,7 +8,7 @@ import Loader from "../singleUse/Loader";
 import { useNavigate } from "react-router-dom";
 
 
-const JoinTeam = ({ isModalOpen, onClose, name = "" }) => {
+const JoinTeam = ({ isModalOpen, onClose, name = "", current }) => {
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
 
@@ -24,7 +24,9 @@ const JoinTeam = ({ isModalOpen, onClose, name = "" }) => {
             action.resetForm()
             setLoading(true)
             const isJoin = await joinTeam(values)
-            { isJoin && navigate('/code-editor') }
+            if (isJoin) {
+                current ? window.location.reload() : window.location.replace('/editor')
+            }
             setLoading(false)
         }
     })

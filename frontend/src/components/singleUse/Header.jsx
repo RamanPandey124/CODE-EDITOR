@@ -41,11 +41,11 @@ const Header = () => {
                 <div className='userMenu'>
                     <div className='navbar'>
                         <Link to={'/'}>Home</Link>
-                        <Link to={'/code-editor'}>Editor</Link>
-                        <Link to={'/code-editor'}>Tasks</Link>
+                        <Link to={'/editor'}>Editor</Link>
+                        <Link to={'/tasks'}>Tasks</Link>
                     </div>
                     <div className='identityBar'>
-                        <p>{state.name}<CgProfile className='userIcon headerIcon' /></p>
+                        <p>{state.user?.name}<CgProfile className='userIcon headerIcon' /></p>
                     </div>
                 </div>
 

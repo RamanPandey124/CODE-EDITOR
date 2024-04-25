@@ -33,7 +33,7 @@ const CreateTeam = ({ className, title }) => {
             action.resetForm()
             setLoading(true)
             const isCreate = await createTeam(values)
-            { isCreate && navigate('/code-editor') }
+            { isCreate && navigate('/editor') }
             setTeamExist(false)
             setLoading(false)
         }
