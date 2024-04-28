@@ -1,87 +1,132 @@
 import "public/sass/pages/TaskManager.scss"
-import { useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import WorkspaceWrapper from "../reuseable/WorkspaceWrapper"
-
-const cont = [
-    {
-        id: 'c1',
-        child: [
-            { id: 'c1A', title: 'This is c1A' },
-            { id: 'c1B', title: 'This is c1B' },
-            { id: 'c1C', title: 'This is c1C' },
-        ]
-    },
-    {
-        id: 'c2',
-        child: [
-            // { id: 'c2A', title: 'This is c2A' },
-            { id: 'c2A', title: 'This is c2B' },
-            // { id: 'c2A', title: 'This is c2C' },
-        ]
-    },
-    {
-        id: 'c3',
-        child: [
-            // { id: 'c3A', title: 'This is c3A' },
-            { id: 'c3B', title: 'This is c3B' },
-            { id: 'c3C', title: 'This is c3C' },
-        ]
-    }
-]
-
+import { CounterContext } from "@/contextApi/Context"
+import { getTaskContainers } from "@/services/AxiosApi"
+import socket from "@/sockets/Socket"
 
 
 const TaskManager = () => {
-    const [containers, setContainer] = useState(cont)
-    const [dragElement, setDragElement] = useState(null)
 
+    const [containers, setContainer] = useState([])
+    const [text, setText] = useState('')
+    const [selfContainer, setSelfContainer] = useState({})
+
+    const { state } = useContext(CounterContext)
+    const postData = {
+        teamId: state.team?._id,
+        userIds: state.team?.users
+    }
+
+    async function containerData() {
+        const contArr = await getTaskContainers(postData)
+        const selfCont = contArr.filter(obj => obj.user === state.user.name)[0];
+        const selfIndex = contArr.indexOf(selfCont)
+        setSelfContainer({ selfIndex, selfContId: selfCont._id })
+        setContainer(contArr)
+    }
+
+    useEffect(() => {
+        socket.connect()
+        if (state.team) {
+            containerData()
+            socket.emit("teamJoin", state.team._id)
+        }
+    }, [state.team])
+
+
+    function handleInput(e) {
+        e.preventDefault()
+        socket.emit('newTask', { text, ...selfContainer }, postData.teamId)
+        setText('')
+        handleSelfTask()
+    }
+
+    function handleSelfTask() {
+        socket.on('newTask', ({ newTask, selfIndex }) => {
+            if (!containers[selfIndex].tasks.includes(newTask)) {
+                containers[selfIndex].tasks.push(newTask)
+                setContainer([...containers])
+            }
+        })
+    }
+    // ------------------------------------------------------------
+
+    const [dragElement, setDragElement] = useState(null)
     function handleStart(elem) {
         setDragElement(elem)
     }
 
     function handleDrop(elem) {
-        if (dragElement != null) {
-            const element = containers[dragElement.DragIndex]?.child.splice(dragElement.childIndex, 1)
-            containers[elem]?.child.push(...element)
+        if (dragElement != null && dragElement.DragId != elem.DropId) {
+            socket.emit('dropTask', { ...dragElement, ...elem }, postData.teamId)
+            handleDropTask()
         }
-        setContainer([...containers])
     }
+
+    const [checkRepeat, setRepeat] = useState({})
+    function handleDropTask() {
+        socket.on('dropTask', (obj) => {
+            console.log(JSON.stringify(checkRepeat), JSON.stringify(obj))
+            if (JSON.stringify(checkRepeat) !== JSON.stringify(obj)) {
+                const { DragIndex, DropIndex, taskIndex } = obj
+                console.log(DragIndex, DropIndex, taskIndex)
+                const element = containers[DragIndex]?.tasks.splice(taskIndex, 1)
+                containers[DropIndex]?.tasks.push(...element)
+                setContainer([...containers])
+                setRepeat({ ...obj })
+            }
+        })
+    }
+
+
 
     return (
         <WorkspaceWrapper>
-            <div className="Tasks-container">
-                {containers.map((value, index) => (
-                    <TaskContainer
-                        key={index}
-                        value={value}
-                        DragIndex={index}
-                        onDragStart={handleStart}
-                        onDrop={handleDrop}
-                    />
-                ))}
+            <div>
+                <form onSubmit={handleInput}>
+                    <input type="text" value={text} onChange={(e) => setText(e.target.value)} />
+                    <button type="submit">submit</button>
+                </form>
+                <div className="Tasks-container">
+                    {containers.length && containers.map((value, index) => (
+                        <TaskContainer
+                            key={index}
+                            value={value}
+                            DragIndex={index}
+                            onDragStart={handleStart}
+                            onDrop={handleDrop}
+                        />
+                    ))}
+                </div>
             </div>
         </WorkspaceWrapper>
     )
 }
 
 const TaskContainer = ({ value, DragIndex, onDragStart, onDrop }) => {
+    // console.log(value._id)
+
 
     return (
         <div>
-            <p>ramanpandey</p>
-            <div className="original" onDragOver={(e) => e.preventDefault()}
-                onDrop={() => onDrop(DragIndex)}
+            <p>{value?.user}</p>
+
+            <div
+                className="original"
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={() => onDrop({ DropIndex: DragIndex, DropId: value._id })}
             >
-                {value.child?.map((child, childIndex) => (
-                    <div
-                        key={childIndex}
+                {value?.tasks.length ? value.tasks.map((task, taskIndex) => (
+                    < div
+                        key={taskIndex}
                         className="child"
                         draggable
-                        onDragStart={() => onDragStart({ DragIndex, childIndex })}
+                        onDragStart={() => onDragStart({ DragIndex, taskIndex, DragId: value._id, taskId: task._id })}
                     >
-                        {child.title}
-                    </div>
-                ))}
+                        {task.text}
+                    </div >
+                )) : null}
             </div>
         </div>
     )
@@ -91,3 +136,15 @@ const TaskContainer = ({ value, DragIndex, onDragStart, onDrop }) => {
 
 
 export default TaskManager
+
+// function handleStart(elem) {
+//     setDragElement(elem)
+// }
+
+// function handleDrop(elem) {
+//     if (dragElement != null) {
+//         const element = containers[dragElement.DragIndex]?.child.splice(dragElement.childIndex, 1)
+//         containers[elem]?.child.push(...element)
+//     }
+//     setContainer([...containers])
+// }

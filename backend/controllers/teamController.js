@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Types;
 const userModel = require("../models/userModel");
 const teamModel = require("../models/teamModel");
+const taskContainerModel = require('./../models/taskContainerModel')
 const generateAccessToken = require("../utils/generateToken")
 const jwt = require("jsonwebtoken")
 
@@ -176,8 +177,125 @@ const getTeam = async (req, res) => {
 
 }
 
+const getTaskContainer = async (req, res) => {
+    const { teamId, userIds } = req.body
+    for (id of userIds) {
+        const cont = await taskContainerModel.find({ teamId, userId: id })
+        if (!cont.length) {
+            const taskContainer = await new taskContainerModel({
+                teamId,
+                userId: id
+            }).save()
+            await teamModel.findByIdAndUpdate(
+                teamId,
+                { $push: { containers: taskContainer._id } },
+                { new: true }
+            )
+        }
+    }
+
+    const container = await teamModel.aggregate([
+        {
+            $match: {
+                _id: new ObjectId("661ba24e9e14e01a163ac3cb"),
+            },
+        },
+        {
+            $project: {
+                containers: 1,
+            },
+        },
+        {
+            $lookup: {
+                from: "taskcontainers",
+                localField: "containers",
+                foreignField: "_id",
+                as: "containers",
+            },
+        },
+        {
+            $unwind: {
+                path: "$containers",
+            },
+        },
+        {
+            $lookup: {
+                from: "users",
+                localField: "containers.userId",
+                foreignField: "_id",
+                as: "user",
+            },
+        },
+        {
+            $unwind: {
+                path: "$user",
+            },
+        },
+        {
+            $addFields: {
+                hasTasks: {
+                    $gt: [
+                        {
+                            $size: "$containers.tasks",
+                        },
+                        0,
+                    ],
+                },
+            },
+        },
+        {
+            $project: {
+                containers: 1,
+                user: "$user.name",
+                tasks: {
+                    $cond: {
+                        if: "$hasTasks",
+                        then: "$containers.tasks",
+                        else: [],
+                    },
+                },
+            },
+        },
+        {
+            $lookup: {
+                from: "tasks",
+                localField: "tasks",
+                foreignField: "_id",
+                as: "tasks",
+            },
+        },
+        {
+            $group: {
+                _id: "$_id",
+                containers: {
+                    $push: {
+                        _id: "$containers._id",
+                        // teamId: "$containers.teamId",
+                        // userId: "$containers.userId",
+                        user: "$user",
+                        tasks: "$tasks",
+                    },
+                },
+            },
+        },
+        {
+            $project: {
+                _id: 0
+            }
+        }
+    ]
+    )
+
+    return res.json({
+        success: true,
+        msg: 'task Containers',
+        containers: container[0].containers
+    })
+}
+
 module.exports = {
     createTeam,
     joinTeam,
-    getTeam
+    getTeam,
+    getTaskContainer
 }

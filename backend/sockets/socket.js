@@ -1,5 +1,7 @@
 const { Server } = require('socket.io')
 const teamModel = require("../models/teamModel")
+const taskModel = require('./../models/taskModel')
+const taskContainerModel = require('./../models/taskContainerModel')
 
 const socket = (server) => {
     const io = new Server(server, {
@@ -14,24 +16,43 @@ const socket = (server) => {
         // console.log(socket.handshake.query.auth)
 
         socket.on('isTeamExist', async (name) => {
-            console.log(name)
             const isName = await teamModel.find({ name })
             socket.emit('teamFound', isName.length)
         })
 
-        socket.on('joinCode', (teamId) => {
+        socket.on('teamJoin', (teamId) => {
             socket.join(teamId)
         })
 
-        socket.on('newCode', async ({ code, name }, teamId) => {
-            await teamModel.findByIdAndUpdate(teamId, { $set: { code } })
-            io.to(teamId).emit('newCode', { code, name })
+        socket.on('newTask', async ({ text, selfIndex, selfContId }, teamId) => {
+
+            const newTask = await new taskModel({ text }).save()
+            await taskContainerModel.findByIdAndUpdate(
+                selfContId,
+                { $push: { tasks: newTask._id } },
+                { new: true }
+            )
+
+            io.to(teamId).emit('newTask', { newTask, selfIndex })
         })
 
+
+        socket.on('dropTask', async (obj, teamId) => {
+            const { DragIndex, taskIndex, DragId, taskId, DropIndex, DropId } = obj
+
+            await taskContainerModel.findByIdAndUpdate(DragId, { $pull: { tasks: taskId } })
+            await taskContainerModel.findByIdAndUpdate(DropId, { $push: { tasks: taskId } })
+
+            io.to(teamId).emit('dropTask', { DragIndex, taskIndex, DropIndex })
+            
+        })
+
+
+
+
         socket.on('disconnect', () => {
-            // console.log('user disconnected...')
+            console.log('user disconnected...')
         })
     })
 }
-
 module.exports = socket

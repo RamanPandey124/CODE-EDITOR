@@ -16,10 +16,17 @@ const teamSchema = new mongoose.Schema({
             ref: "User",
         },
     ],
-    code:{
-        type:String,
-        default:''
+    containers: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "TaskContainer",
+        },
+    ],
+    code: {
+        type: String,
+        default: ''
     }
+
 })
 
 

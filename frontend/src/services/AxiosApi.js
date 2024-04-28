@@ -122,3 +122,21 @@ export const getTeam = async (teamToken) => {
         }
     }
 }
+
+export const getTaskContainers = async (postObj) => {
+    try {
+        const { data } = await API.post(`/team/get-taskContainer`, postObj)
+        if (data.success) {
+            return data.containers
+        }
+
+    } catch (error) {
+        if (error.response && error.response.data.msg) {
+            console.log(error.response)
+            toast.error(error.response.data.msg)
+        }
+        else {
+            toast.error(error.message)
+        }
+    }
+}

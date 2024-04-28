@@ -7,6 +7,7 @@ import { CounterContext } from "@/contextApi/Context";
 import { RiTeamFill } from "react-icons/ri";
 import { MdCancel } from "react-icons/md";
 import JoinTeam from "./JoinTeam";
+import socket from "@/sockets/Socket";
 
 
 
@@ -41,6 +42,13 @@ const WorkspaceWrapper = ({ children }) => {
     useEffect(() => {
         { teamToken && teamFunc() }
     }, [])
+
+    // useEffect(() => {
+    //     if (team) {
+    //         socket.connect()
+    //         socket.emit("teamJoin", team._id)
+    //     }
+    // }, [team])
 
     return (
         <div className="workspace-wrapper">
