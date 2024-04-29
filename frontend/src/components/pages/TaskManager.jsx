@@ -8,11 +8,11 @@ import socket from "@/sockets/Socket"
 
 const TaskManager = () => {
 
+    const { state } = useContext(CounterContext)
     const [containers, setContainer] = useState([])
     const [text, setText] = useState('')
     const [selfContainer, setSelfContainer] = useState({})
-
-    const { state } = useContext(CounterContext)
+    const [dragElement, setDragElement] = useState(null)
     const postData = {
         teamId: state.team?._id,
         userIds: state.team?.users
@@ -26,33 +26,14 @@ const TaskManager = () => {
         setContainer(contArr)
     }
 
-    useEffect(() => {
-        socket.connect()
-        if (state.team) {
-            containerData()
-            socket.emit("teamJoin", state.team._id)
-        }
-    }, [state.team])
-
-
     function handleInput(e) {
         e.preventDefault()
+        const form = new FormData(e.currentTarget)
+        const text = form.get('title')
         socket.emit('newTask', { text, ...selfContainer }, postData.teamId)
-        setText('')
-        handleSelfTask()
+        form.set('title', '')
     }
 
-    function handleSelfTask() {
-        socket.on('newTask', ({ newTask, selfIndex }) => {
-            if (!containers[selfIndex].tasks.includes(newTask)) {
-                containers[selfIndex].tasks.push(newTask)
-                setContainer([...containers])
-            }
-        })
-    }
-    // ------------------------------------------------------------
-
-    const [dragElement, setDragElement] = useState(null)
     function handleStart(elem) {
         setDragElement(elem)
     }
@@ -60,36 +41,38 @@ const TaskManager = () => {
     function handleDrop(elem) {
         if (dragElement != null && dragElement.DragId != elem.DropId) {
             socket.emit('dropTask', { ...dragElement, ...elem }, postData.teamId)
-            handleDropTask()
         }
     }
 
-    const [checkRepeat, setRepeat] = useState({})
-    function handleDropTask() {
-        socket.on('dropTask', (obj) => {
-            console.log(JSON.stringify(checkRepeat), JSON.stringify(obj))
-            if (JSON.stringify(checkRepeat) !== JSON.stringify(obj)) {
-                const { DragIndex, DropIndex, taskIndex } = obj
-                console.log(DragIndex, DropIndex, taskIndex)
-                const element = containers[DragIndex]?.tasks.splice(taskIndex, 1)
-                containers[DropIndex]?.tasks.push(...element)
-                setContainer([...containers])
-                setRepeat({ ...obj })
-            }
+    useEffect(() => {
+        socket.on('newTask', (container) => {
+            setContainer(container)
         })
-    }
+        socket.on('dropTask', (container) => {
+            setContainer(container)
+        })
+    }, [text, dragElement])
+
+    useEffect(() => {
+        socket.connect()
+        if (state.team) {
+            containerData()
+            socket.emit("teamJoin", state.team._id)
+        }
+
+    }, [state.team])
 
 
 
     return (
-        <WorkspaceWrapper>
+        < WorkspaceWrapper >
             <div>
                 <form onSubmit={handleInput}>
-                    <input type="text" value={text} onChange={(e) => setText(e.target.value)} />
+                    <input type="text" name="title" defaultValue={""} />
                     <button type="submit">submit</button>
                 </form>
                 <div className="Tasks-container">
-                    {containers.length && containers.map((value, index) => (
+                    {containers?.map((value, index) => (
                         <TaskContainer
                             key={index}
                             value={value}
@@ -100,13 +83,11 @@ const TaskManager = () => {
                     ))}
                 </div>
             </div>
-        </WorkspaceWrapper>
+        </WorkspaceWrapper >
     )
 }
 
 const TaskContainer = ({ value, DragIndex, onDragStart, onDrop }) => {
-    // console.log(value._id)
-
 
     return (
         <div>
@@ -136,6 +117,23 @@ const TaskContainer = ({ value, DragIndex, onDragStart, onDrop }) => {
 
 
 export default TaskManager
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // function handleStart(elem) {
 //     setDragElement(elem)

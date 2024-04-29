@@ -179,12 +179,13 @@ const getTeam = async (req, res) => {
 
 const getTaskContainer = async (req, res) => {
     const { teamId, userIds } = req.body
-    for (id of userIds) {
-        const cont = await taskContainerModel.find({ teamId, userId: id })
+
+    for (user of userIds) {
+        const cont = await taskContainerModel.find({ teamId, userId: user._id })
         if (!cont.length) {
             const taskContainer = await new taskContainerModel({
                 teamId,
-                userId: id
+                userId: user._id
             }).save()
             await teamModel.findByIdAndUpdate(
                 teamId,
@@ -197,7 +198,7 @@ const getTaskContainer = async (req, res) => {
     const container = await teamModel.aggregate([
         {
             $match: {
-                _id: new ObjectId("661ba24e9e14e01a163ac3cb"),
+                _id: new ObjectId(teamId),
             },
         },
         {
@@ -270,8 +271,6 @@ const getTaskContainer = async (req, res) => {
                 containers: {
                     $push: {
                         _id: "$containers._id",
-                        // teamId: "$containers.teamId",
-                        // userId: "$containers.userId",
                         user: "$user",
                         tasks: "$tasks",
                     },

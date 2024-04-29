@@ -8,6 +8,7 @@ import { RiTeamFill } from "react-icons/ri";
 import { MdCancel } from "react-icons/md";
 import JoinTeam from "./JoinTeam";
 import socket from "@/sockets/Socket";
+import { memo } from "react";
 
 
 
@@ -86,5 +87,5 @@ const WorkspaceWrapper = ({ children }) => {
 
 }
 
-export default WorkspaceWrapper
+export default memo(WorkspaceWrapper)
 
