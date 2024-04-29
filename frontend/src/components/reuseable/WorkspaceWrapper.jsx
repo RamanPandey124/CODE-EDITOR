@@ -1,14 +1,12 @@
 import "public/sass/reuseable/WorkspaceWrapper.scss"
 import { getTeam } from "@/services/AxiosApi"
 import { useContext, useEffect, useState } from "react"
-import { Navigate, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { CiLogout } from "react-icons/ci";
 import { CounterContext } from "@/contextApi/Context";
 import { RiTeamFill } from "react-icons/ri";
 import { MdCancel } from "react-icons/md";
 import JoinTeam from "./JoinTeam";
-import socket from "@/sockets/Socket";
-import { memo } from "react";
 
 
 
@@ -23,9 +21,9 @@ const WorkspaceWrapper = ({ children }) => {
         )
     }
 
+    const [teamPanel, setTeamPanel] = useState(false)
     const { state, dispatch } = useContext(CounterContext)
     const { team } = state
-    const [teamPanel, setTeamPanel] = useState(false)
 
     const teamFunc = async () => {
         const data = await getTeam(teamToken)
@@ -44,12 +42,6 @@ const WorkspaceWrapper = ({ children }) => {
         { teamToken && teamFunc() }
     }, [])
 
-    // useEffect(() => {
-    //     if (team) {
-    //         socket.connect()
-    //         socket.emit("teamJoin", team._id)
-    //     }
-    // }, [team])
 
     return (
         <div className="workspace-wrapper">
@@ -80,6 +72,7 @@ const WorkspaceWrapper = ({ children }) => {
                     <RiTeamFill className="RiTeamFill teamIcon" onClick={() => setTeamPanel(true)} />}
             </div>
 
+
             {team && children}
 
         </div>
@@ -87,5 +80,5 @@ const WorkspaceWrapper = ({ children }) => {
 
 }
 
-export default memo(WorkspaceWrapper)
+export default WorkspaceWrapper
 

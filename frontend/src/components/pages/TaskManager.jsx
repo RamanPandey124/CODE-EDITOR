@@ -7,11 +7,10 @@ import socket from "@/sockets/Socket"
 
 
 const TaskManager = () => {
-
+    const [count, setCount] = useState(true)
     const { state } = useContext(CounterContext)
     const [containers, setContainer] = useState([])
-    const [text, setText] = useState('')
-    const [selfContainer, setSelfContainer] = useState({})
+    const [selfContId, setSelfContId] = useState(null)
     const [dragElement, setDragElement] = useState(null)
     const postData = {
         teamId: state.team?._id,
@@ -21,17 +20,16 @@ const TaskManager = () => {
     async function containerData() {
         const contArr = await getTaskContainers(postData)
         const selfCont = contArr.filter(obj => obj.user === state.user.name)[0];
-        const selfIndex = contArr.indexOf(selfCont)
-        setSelfContainer({ selfIndex, selfContId: selfCont._id })
+        setSelfContId(selfCont._id)
         setContainer(contArr)
     }
+
 
     function handleInput(e) {
         e.preventDefault()
         const form = new FormData(e.currentTarget)
         const text = form.get('title')
-        socket.emit('newTask', { text, ...selfContainer }, postData.teamId)
-        form.set('title', '')
+        socket.emit('newTask', { text, selfContId }, postData.teamId)
     }
 
     function handleStart(elem) {
@@ -48,17 +46,18 @@ const TaskManager = () => {
         socket.on('newTask', (container) => {
             setContainer(container)
         })
-        socket.on('dropTask', (container) => {
-            setContainer(container)
-        })
-    }, [text, dragElement])
+    }, [dragElement])
 
     useEffect(() => {
         socket.connect()
-        if (state.team) {
+        if (state.team && count) {
             containerData()
             socket.emit("teamJoin", state.team._id)
+            setCount(false)
         }
+        return (() => {
+            setCount(true)
+        })
 
     }, [state.team])
 
@@ -76,7 +75,6 @@ const TaskManager = () => {
                         <TaskContainer
                             key={index}
                             value={value}
-                            DragIndex={index}
                             onDragStart={handleStart}
                             onDrop={handleDrop}
                         />
@@ -87,7 +85,7 @@ const TaskManager = () => {
     )
 }
 
-const TaskContainer = ({ value, DragIndex, onDragStart, onDrop }) => {
+const TaskContainer = ({ value, onDragStart, onDrop }) => {
 
     return (
         <div>
@@ -96,14 +94,14 @@ const TaskContainer = ({ value, DragIndex, onDragStart, onDrop }) => {
             <div
                 className="original"
                 onDragOver={(e) => e.preventDefault()}
-                onDrop={() => onDrop({ DropIndex: DragIndex, DropId: value._id })}
+                onDrop={() => onDrop({ DropId: value._id })}
             >
                 {value?.tasks.length ? value.tasks.map((task, taskIndex) => (
                     < div
                         key={taskIndex}
                         className="child"
                         draggable
-                        onDragStart={() => onDragStart({ DragIndex, taskIndex, DragId: value._id, taskId: task._id })}
+                        onDragStart={() => onDragStart({ DragId: value._id, taskId: task._id })}
                     >
                         {task.text}
                     </div >

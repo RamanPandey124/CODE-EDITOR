@@ -177,8 +177,9 @@ const getTeam = async (req, res) => {
 
 }
 
+
 const getTaskContainer = async (req, res) => {
-    const { teamId, userIds } = req.body
+    let { teamId, userIds } = req.body
 
     for (user of userIds) {
         const cont = await taskContainerModel.find({ teamId, userId: user._id })
