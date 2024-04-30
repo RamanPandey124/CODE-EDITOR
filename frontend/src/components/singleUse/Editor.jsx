@@ -7,6 +7,7 @@ import * as Y from "yjs";
 import LiveblocksProvider from "@liveblocks/yjs";
 import { useRoom } from "../../../liveblocks.config";
 import { CounterContext } from "@/contextApi/Context";
+import { useSelector } from "react-redux";
 
 
 function Editor() {
@@ -40,6 +41,7 @@ function BlockNote({ doc, provider }) {
   const { state } = useContext(CounterContext)
   const random = Math.round(2 - 2 * Math.random())
   const color = ["#FF3EA5", "#6420AA", "#DC6B19"]
+  const { theme } = useSelector((state) => state.theme)
 
   const editor = useCreateBlockNote({
     collaboration: {
@@ -61,5 +63,5 @@ function BlockNote({ doc, provider }) {
    */
   let data
 
-  return <BlockNoteView editor={editor} className="BlockNoteView"/>;
+  return <BlockNoteView theme={theme == 'dark' ? 'dark' : 'light'} editor={editor} className="BlockNoteView" />;
 }

@@ -4,6 +4,11 @@ import WorkspaceWrapper from "../reuseable/WorkspaceWrapper"
 import { CounterContext } from "@/contextApi/Context"
 import { getTaskContainers } from "@/services/AxiosApi"
 import socket from "@/sockets/Socket"
+import { useFormik } from "formik"
+import { createTaskSchema } from "@/assets/yup files/RegisterYup"
+import InputBox from "../reuseable/InputBox"
+import Modal from "../singleUse/Modal"
+import { CiEdit } from "react-icons/ci";
 
 
 const TaskManager = () => {
@@ -12,10 +17,23 @@ const TaskManager = () => {
     const [containers, setContainer] = useState([])
     const [selfContId, setSelfContId] = useState(null)
     const [dragElement, setDragElement] = useState(null)
+    const [isModalOpen, setModalOpen] = useState(false)
     const postData = {
         teamId: state.team?._id,
         userIds: state.team?.users
     }
+
+    const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
+        initialValues: {
+            title: "",
+            description: ""
+        },
+        onSubmit: async (values, action) => {
+            socket.emit('newTask', { ...values, selfContId }, postData.teamId)
+            action.resetForm()
+        }
+    })
+
 
     async function containerData() {
         const contArr = await getTaskContainers(postData)
@@ -61,25 +79,38 @@ const TaskManager = () => {
 
     }, [state.team])
 
-
-
     return (
         < WorkspaceWrapper >
-            <div>
-                <form onSubmit={handleInput}>
-                    <input type="text" name="title" defaultValue={""} />
-                    <button type="submit">submit</button>
-                </form>
-                <div className="Tasks-container">
-                    {containers?.map((value, index) => (
-                        <TaskContainer
-                            key={index}
-                            value={value}
-                            onDragStart={handleStart}
-                            onDrop={handleDrop}
+            <div className="createTaskForm">
+                <h3 onClick={() => setModalOpen(true)}><CiEdit /> new task</h3>
+                <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
+                    <form onSubmit={handleSubmit}>
+                        <InputBox
+                            name={'title'}
+                            placeholder={'title'}
+                            onChange={handleChange}
+                            errors={errors.name}
+                            touched={touched.name}
+                            onBlur={handleBlur}
                         />
-                    ))}
-                </div>
+                        <InputBox
+                            name={'description'}
+                            placeholder={'description'}
+                            onChange={handleChange}
+                        />
+                        <button type="submit" className="createbtn">submit</button>
+                    </form>
+                </Modal>
+            </div>
+            <div className="Tasks-container">
+                {containers?.map((value, index) => (
+                    <TaskContainer
+                        key={index}
+                        value={value}
+                        onDragStart={handleStart}
+                        onDrop={handleDrop}
+                    />
+                ))}
             </div>
         </WorkspaceWrapper >
     )
@@ -94,7 +125,7 @@ const TaskContainer = ({ value, onDragStart, onDrop }) => {
             <div
                 className="original"
                 onDragOver={(e) => e.preventDefault()}
-                onDrop={() => onDrop({ DropId: value._id })}
+                onDrop={() => { !value.tasks.length && onDrop({ DropId: value._id }) }}
             >
                 {value?.tasks.length ? value.tasks.map((task, taskIndex) => (
                     < div
@@ -102,6 +133,7 @@ const TaskContainer = ({ value, onDragStart, onDrop }) => {
                         className="child"
                         draggable
                         onDragStart={() => onDragStart({ DragId: value._id, taskId: task._id })}
+                        onDrop={() => onDrop({ DropId: value._id, taskIndex })}
                     >
                         {task.text}
                     </div >

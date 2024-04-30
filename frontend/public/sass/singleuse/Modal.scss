@@ -4,14 +4,12 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: #000000c6;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 100;
 
     .modal {
-        // background: white;
         border: 2px solid;
         padding: 20px;
         border-radius: 5px;

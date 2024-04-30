@@ -5,8 +5,6 @@
     width: 100%;
     position: relative;
 
-
-
     .userdetails {
         padding: 1rem 4rem;
         display: flex;
@@ -103,46 +101,8 @@
 
     }
 
-    .createTeam {
-        background: linear-gradient(50deg, green, #05ef0567, #e6ee90);
-    }
-
-    .joinTeam {
-        background: linear-gradient(50deg, #f00af0f6, #ef0582fb, #e6ee90);
-    }
-
-    .createbtn {
-        margin: 0 auto;
-        display: block;
-        width: 100%;
-        padding: .5rem 0;
-        border-radius: 1rem;
-        background: linear-gradient(100deg, #007accfb, blue);
-
-        &:hover {
-            background: gray;
-        }
-    }
-
     .joinbtn {
         width: 8rem;
-    }
-
-
-    .scrollBox {
-        position: fixed;
-        bottom: 2rem;
-        right: 1rem;
-        display: none;
-
-        .scrollbtn {
-            padding: .4rem .7rem;
-            margin: .4rem 0;
-        }
-    }
-
-    .scrollDisplay {
-        display: block;
     }
 
 }

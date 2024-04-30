@@ -1,7 +1,6 @@
 @import "@/index.scss";
 
 .header {
-    // border: 2px solid blue;
     position: fixed;
     z-index: 12;
     padding: 0 2rem;
@@ -9,7 +8,6 @@
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    background-color: #000000dc;
     min-height: 2.7rem;
 
     @include lg {
@@ -195,7 +193,7 @@
                 position: fixed;
                 top: 0;
                 right: 0;
-                padding: 4rem 1rem 0 0;
+                padding: 4rem .5rem 0 0;
 
                 @include lg {
                     position: static;
@@ -205,10 +203,11 @@
                 }
 
                 .dropMenu {
-                    box-shadow: gray 0 0 2px 2px;
+                    // box-shadow: gray 0 0 2px 2px;
                     border-radius: 10px;
                     padding: 1rem;
                     width: 13rem;
+                    z-index: 15;
 
                     @include lg {
                         position: static;
@@ -216,6 +215,7 @@
                         box-shadow: none;
                         padding: 0;
                         width: 50%;
+                        background-color: none;
 
                         &::before {
                             content: "Utils";
@@ -230,7 +230,6 @@
 
 
                     .actionBackground {
-                        background-color: #232329;
                         padding: .5rem;
                         padding-top: 0;
                         border-radius: 10px;
@@ -268,10 +267,13 @@
 
                     .themeBox {
                         margin: 0;
-                        border: 1px solid;
                         width: 50%;
                         display: flex;
                         justify-content: center;
+
+                        @include lg {
+                            border: .5px solid;
+                        }
                     }
                 }
             }

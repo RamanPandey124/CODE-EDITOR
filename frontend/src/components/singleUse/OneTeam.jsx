@@ -5,9 +5,10 @@ import { memo } from "react"
 const OneTeam = ({ team }) => {
     const [isModalOpen, setModelOpen] = useState(false)
     const randomIcon = getRandomIcon();
+    const { actionBg } = useSelector((state) => state.theme)
 
     return (
-        <div className="team-box">
+        <div className={`team-box ${actionBg}`}>
             <FontAwesomeIcon icon={randomIcon} className="fontAwesome" />
             <h2>{team.name}</h2>
             <hr />
@@ -35,6 +36,7 @@ import {
     faUserNinja,
     faHandsHelping
 } from '@fortawesome/free-solid-svg-icons';
+import { useSelector } from "react-redux"
 
 const icons = [
     faUsers, faUserFriends, faUserPlus, faUserCheck, faUserCog, faUserShield, faUserTag, faUserTie, faUserNinja, faHandsHelping

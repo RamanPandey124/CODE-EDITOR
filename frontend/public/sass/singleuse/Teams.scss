@@ -1,9 +1,7 @@
 @import "@/index.scss";
 
 .Teams-container {
-    // border: 2px solid;
     padding: 2rem 4rem;
-    background: linear-gradient(120deg, #060510, #29011600);
 
     @include xlg {
         padding: 1rem;
@@ -13,9 +11,9 @@
         display: flex;
         margin-bottom: 2rem;
         position: sticky;
-        top: 3rem;
-        background-color: #060510;
-        padding-bottom:1rem ;
+        top: 3.6rem;
+        padding-bottom: 1rem;
+
 
         @include md {
             display: block;
@@ -81,24 +79,26 @@
             padding: 1rem 2rem;
             height: 8rem;
             width: 20rem;
-            background: linear-gradient(150deg, #80808038, rgba(128, 128, 128, 0.49), rgb(104, 110, 118), rgba(0, 0, 255, 0.31));
             border-radius: 10px;
-            @include lg{
+
+            @include lg {
                 width: 100%;
             }
 
             .fontAwesome {
                 height: 2rem;
                 width: 2rem;
+                color: #0000ffd0;
             }
 
             hr {
+                border: 1px solid;
                 margin-bottom: 1rem;
             }
 
-            
 
-           
+
+
         }
     }
 }

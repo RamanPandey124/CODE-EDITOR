@@ -11,6 +11,8 @@ import { RiQuoteText } from "react-icons/ri";
 import { RxDropdownMenu } from "react-icons/rx";
 import CreateTeam from './CreateTeam';
 import JoinNew from './JoinNew';
+import { dark, light } from '@/redux/slices/themeSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 
@@ -19,10 +21,23 @@ const Header = () => {
     const { state } = useContext(CounterContext)
     const [isDark, setDark] = useState(true)
     const [isBar, setBar] = useState(false)
+    const dispatch = useDispatch()
+
+    const { headerBg, shadow, actionBg } = useSelector((state) => state.theme)
+
+    function handleTheme() {
+        if (isDark) {
+            dispatch(light())
+        }
+        else {
+            dispatch(dark())
+        }
+        setDark(!isDark)
+    }
 
 
     return (
-        <div className={`header`}>
+        <div className={`header ${headerBg}`}>
             <div className={`headerTitle ${!isAuthenticated() && "headerAll"}`}>
                 <FaLaptopCode className='laptopIcon' />
                 <h6>CollabEditor</h6>
@@ -31,7 +46,7 @@ const Header = () => {
                     <span className='quoteDisplay' onClick={() => setBar(!isBar)}>
                         {isBar ? <MdCancel className='riQuote ' /> : <RiQuoteText className='riQuote' />}
                     </span> :
-                    <div className={`unAuthTheme`} onClick={() => setDark(!isDark)}>
+                    <div className={`unAuthTheme`} onClick={handleTheme}>
                         {isDark ? <MdLightMode className='headerIcon' /> : <MdDarkMode className='headerIcon' />}
                     </div>
                 }
@@ -53,12 +68,12 @@ const Header = () => {
                     <RxDropdownMenu className='dropDown' />
 
                     <div className='dropBox'>
-                        <div className='dropMenu'>
-                            <CreateTeam className={'teamCraft actionBackground'} title={'create new'} />
-                            <JoinNew className={'teamCraft actionBackground'} title={'join team'} />
+                        <div className={`dropMenu ${shadow} ${headerBg}`}>
+                            <CreateTeam className={`teamCraft actionBackground ${actionBg}`} title={'create new'} />
+                            <JoinNew className={`teamCraft actionBackground ${actionBg}`} title={'join team'} />
                             <div className='actionCraft'>
                                 <Logout />
-                                <div className={`themeBox actionBackground`} onClick={() => setDark(!isDark)}>
+                                <div className={`themeBox actionBackground ${actionBg}`} onClick={handleTheme}>
                                     {isDark ? <MdLightMode className='headerIcon' /> : <MdDarkMode className='headerIcon' />}
                                 </div>
                             </div>

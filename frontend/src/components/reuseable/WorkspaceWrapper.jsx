@@ -7,6 +7,7 @@ import { CounterContext } from "@/contextApi/Context";
 import { RiTeamFill } from "react-icons/ri";
 import { MdCancel } from "react-icons/md";
 import JoinTeam from "./JoinTeam";
+import { useSelector } from "react-redux";
 
 
 
@@ -24,6 +25,7 @@ const WorkspaceWrapper = ({ children }) => {
     const [teamPanel, setTeamPanel] = useState(false)
     const { state, dispatch } = useContext(CounterContext)
     const { team } = state
+    const { actionBg } = useSelector((state) => state.theme)
 
     const teamFunc = async () => {
         const data = await getTeam(teamToken)
@@ -47,7 +49,7 @@ const WorkspaceWrapper = ({ children }) => {
         <div className="workspace-wrapper">
             <div className="team-display">
                 {teamPanel ?
-                    <div className="teamPanel">
+                    <div className={`teamPanel ${actionBg}`}>
                         {team &&
                             <>
                                 <MdCancel className="MdCancel teamIcon" onClick={() => setTeamPanel(false)} />

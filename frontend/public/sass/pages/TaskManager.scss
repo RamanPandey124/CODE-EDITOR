@@ -1,15 +1,16 @@
+.createTaskForm {
+    border: 2px solid;
+}
+
 .Tasks-container {
-    // margin-top: 4rem;
     display: flex;
     column-gap: 1rem;
 
+
     .original {
         border: 2px solid;
-        // height: 10rem;
-        min-height: 5rem;
+        min-height: 2rem;
         width: 10rem;
-        // margin: 2rem 0;
-
 
     }
 

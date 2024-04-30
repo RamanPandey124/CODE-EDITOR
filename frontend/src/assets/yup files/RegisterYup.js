@@ -22,3 +22,7 @@ export const joinTeamSchema = Yup.object({
     name: Yup.string().min(2).max(25).required("Please enter team name"),
     password: Yup.string().min(6).required("please enter your password")
 });
+
+export const createTaskSchema = Yup.object({
+    title: Yup.string().min(2).max(25).required("Please enter a title")
+});
