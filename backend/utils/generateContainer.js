@@ -74,6 +74,19 @@ const generateContainer = async teamId => {
             },
         },
         {
+            $addFields: {
+                tasks: {
+                    $map: {
+                        input: "$containers.tasks",
+                        as: "taskId",
+                        in: {
+                            $arrayElemAt: ["$tasks", { $indexOfArray: ["$tasks._id", "$$taskId"] }]
+                        }
+                    }
+                }
+            }
+        },
+        {
             $group: {
                 _id: "$_id",
                 containers: {

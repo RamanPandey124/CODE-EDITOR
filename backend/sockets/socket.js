@@ -39,10 +39,15 @@ const socket = (server) => {
 
 
         socket.on('dropTask', async (obj, teamId) => {
-            const { DragId, DropId, taskId } = obj
-
+            const { DragId, DropId, taskId, taskIndex } = obj
+            const index = taskIndex || 0
             await taskContainerModel.findByIdAndUpdate(DragId, { $pull: { tasks: taskId } })
-            await taskContainerModel.findByIdAndUpdate(DropId, { $addToSet: { tasks: taskId } })
+            // await taskContainerModel.findByIdAndUpdate(DropId, { $push: { tasks: taskId } })
+            const DropContainer = await taskContainerModel.findById(DropId)
+            const tasks = DropContainer.tasks
+            tasks.splice(index, 0, taskId)
+            DropContainer.tasks = tasks
+            await DropContainer.save()
 
             io.to(teamId).emit('newTask', await generateContainer(teamId))
         })
