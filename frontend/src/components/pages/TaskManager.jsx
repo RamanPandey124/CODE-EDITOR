@@ -8,7 +8,9 @@ import { useFormik } from "formik"
 import { createTaskSchema } from "@/assets/yup files/RegisterYup"
 import InputBox from "../reuseable/InputBox"
 import Modal from "../singleUse/Modal"
-import { CiEdit } from "react-icons/ci";
+import { IoIosCreate } from "react-icons/io";
+import { MdDelete } from "react-icons/md";
+
 
 
 const TaskManager = () => {
@@ -17,7 +19,7 @@ const TaskManager = () => {
     const [containers, setContainer] = useState([])
     const [selfContId, setSelfContId] = useState(null)
     const [dragElement, setDragElement] = useState(null)
-    const [isModalOpen, setModalOpen] = useState(false)
+    const [isNew, setNew] = useState(false)
     const postData = {
         teamId: state.team?._id,
         userIds: state.team?.users
@@ -30,6 +32,7 @@ const TaskManager = () => {
         },
         onSubmit: async (values, action) => {
             socket.emit('newTask', { ...values, selfContId }, postData.teamId)
+            setNew(false)
             action.resetForm()
         }
     })
@@ -42,23 +45,20 @@ const TaskManager = () => {
         setContainer(contArr)
     }
 
-
-    function handleInput(e) {
-        e.preventDefault()
-        const form = new FormData(e.currentTarget)
-        const text = form.get('title')
-        socket.emit('newTask', { text, selfContId }, postData.teamId)
-    }
-
     function handleStart(elem) {
         setDragElement(elem)
     }
 
     function handleDrop(elem) {
-        if (dragElement != null && dragElement.DragId != elem.DropId) {
+        // if (dragElement != null && dragElement.DragId != elem.DropId) {
             socket.emit('dropTask', { ...dragElement, ...elem }, postData.teamId)
-        }
+        // }
     }
+
+    function handleDelete(elem) {
+        socket.emit('deleteTask', elem, postData.teamId)
+    }
+
 
     useEffect(() => {
         socket.on('newTask', (container) => {
@@ -82,41 +82,43 @@ const TaskManager = () => {
     return (
         < WorkspaceWrapper >
             <div className="createTaskForm">
-                <h3 onClick={() => setModalOpen(true)}><CiEdit /> new task</h3>
-                <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
+                <h3 className="newTask" onClick={() => setNew(true)}><IoIosCreate /> new task</h3>
+                <Modal key={state.team?._id} isOpen={isNew} onClose={() => setNew(false)}>
                     <form onSubmit={handleSubmit}>
                         <InputBox
                             name={'title'}
+                            values={values.name}
                             placeholder={'title'}
                             onChange={handleChange}
                             errors={errors.name}
                             touched={touched.name}
                             onBlur={handleBlur}
                         />
-                        <InputBox
-                            name={'description'}
-                            placeholder={'description'}
-                            onChange={handleChange}
-                        />
-                        <button type="submit" className="createbtn">submit</button>
+                        <button
+                            className={`createbtn`}
+                            type='submit'>submit</button>
                     </form>
                 </Modal>
             </div>
-            <div className="Tasks-container">
-                {containers?.map((value, index) => (
-                    <TaskContainer
-                        key={index}
-                        value={value}
-                        onDragStart={handleStart}
-                        onDrop={handleDrop}
-                    />
-                ))}
+            <div className="tasksWrapper">
+                <div className="Tasks-container">
+                    {containers?.map((value, index) => (
+                        <TaskContainer
+                            key={index}
+                            value={value}
+                            onDragStart={handleStart}
+                            onDrop={handleDrop}
+                            onDelete={handleDelete}
+                        />
+                    ))}
+                </div>
             </div>
         </WorkspaceWrapper >
     )
 }
 
-const TaskContainer = ({ value, onDragStart, onDrop }) => {
+const TaskContainer = ({ value, onDragStart, onDrop, onDelete }) => {
+    const { state } = useContext(CounterContext)
 
     return (
         <div>
@@ -127,17 +129,23 @@ const TaskContainer = ({ value, onDragStart, onDrop }) => {
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={() => { !value.tasks.length && onDrop({ DropId: value._id }) }}
             >
-                {value?.tasks.length ? value.tasks.map((task, taskIndex) => (
-                    < div
+                {value?.tasks?.map((task, taskIndex) => {
+                    return < div
                         key={taskIndex}
                         className="child"
                         draggable
                         onDragStart={() => onDragStart({ DragId: value._id, taskId: task._id })}
                         onDrop={() => onDrop({ DropId: value._id, taskIndex })}
                     >
-                        {task.text}
+
+                        <div className="taskTitle">{task.title}</div>
+
+                        {state.user?.name === value?.user &&
+                            <div>
+                                <MdDelete className="taskIcon" onClick={() => onDelete({ taskId: task._id, contId: value._id })} />
+                            </div>}
                     </div >
-                )) : null}
+                })}
             </div>
         </div>
     )

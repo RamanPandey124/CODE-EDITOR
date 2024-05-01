@@ -26,8 +26,8 @@ const socket = (server) => {
             socket.join(teamId)
         })
 
-        socket.on('newTask', async ({ text, selfContId }, teamId) => {
-            const newTask = await new taskModel({ text }).save()
+        socket.on('newTask', async ({ title, description, selfContId }, teamId) => {
+            const newTask = await new taskModel({ title, description }).save()
             await taskContainerModel.findByIdAndUpdate(
                 selfContId,
                 { $push: { tasks: newTask._id } },
@@ -49,6 +49,14 @@ const socket = (server) => {
             DropContainer.tasks = tasks
             await DropContainer.save()
 
+            io.to(teamId).emit('newTask', await generateContainer(teamId))
+        })
+
+
+        socket.on('deleteTask', async (obj, teamId) => {
+            const { taskId, contId } = obj
+            await taskModel.findByIdAndDelete(taskId)
+            await taskContainerModel.findByIdAndUpdate(contId, { $pull: { tasks: taskId } })
             io.to(teamId).emit('newTask', await generateContainer(teamId))
         })
 
