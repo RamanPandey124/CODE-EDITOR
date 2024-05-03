@@ -33,7 +33,7 @@ const signupController = async (req, res) => {
             email,
             password: hashPassword
         })
-        const user = await userData.save()
+        await userData.save()
 
         return res.status(200).json({
             success: true,
@@ -76,12 +76,12 @@ const loginController = async (req, res) => {
             })
         }
 
-        const accessToken = await generateAccessToken({ _id: userData._id }, { expiresIn: '1m' })
-        const refreshToken = await generateAccessToken({ _id: userData._id }, { expiresIn: '5m' })
+        const accessToken = await generateAccessToken({ _id: userData._id }, { expiresIn: '6h' })
+        const refreshToken = await generateAccessToken({ _id: userData._id }, { expiresIn: '24h' })
 
         console.log('accessToken=>', accessToken)
         console.log('refresh=>', refreshToken)
-        
+
         return res.status(200).json({
             success: true,
             msg: "Login successfully!",
@@ -176,13 +176,9 @@ const userProfile = async (req, res) => {
 const refreshToken = async (req, res) => {
     try {
         const { _id } = req.user
-        // console.log('tap', _id)
 
-        const accessToken = await generateAccessToken({ _id }, { expiresIn: '1m' })
-        const refreshToken = await generateAccessToken({ _id }, { expiresIn: '5m' })
-
-        console.log('Updated_accessToken=>', accessToken)
-        console.log('Updated_refresh=>', refreshToken)
+        const accessToken = await generateAccessToken({ _id }, { expiresIn: '6h' })
+        const refreshToken = await generateAccessToken({ _id }, { expiresIn: '24h' })
 
         return res.status(200).json({
             success: true,
@@ -194,7 +190,6 @@ const refreshToken = async (req, res) => {
 
     }
     catch (error) {
-        console.log(error)
         return res.status(400).json({
             success: false,
             error,

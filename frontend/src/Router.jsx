@@ -27,6 +27,7 @@ const Router = () => {
                 />
                 <Route path='/' element={<ProtectedRoute><Home /></ProtectedRoute>} />
                 <Route path='/editor' element={<ProtectedRoute><LiveBlockEditor /></ProtectedRoute>} />
+                <Route path='/tasks' element={<ProtectedRoute><TaskManager /></ProtectedRoute>} />
             </Routes>
         </>
     )

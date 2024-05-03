@@ -3,8 +3,9 @@ import { toast } from 'react-toastify'
 
 export const userSignup = async (values) => {
     try {
-        const { data } = await API.post('/auth/signup', values)
-        if (data.success) {
+        const response = await API.post('/auth/signup', values)
+        console.log(response)
+        if (response.data?.success) {
             toast.success(data.msg)
             setTimeout(() => {
                 window.location.replace('/login')
@@ -12,6 +13,7 @@ export const userSignup = async (values) => {
         }
 
     } catch (error) {
+        console.log(error)
         if (error.response && error.response.data.msg) {
             toast.error(error.response.data.msg)
         }
@@ -75,7 +77,7 @@ export const createTeam = async (values) => {
             toast.error(error.response.data.msg)
         }
         else {
-            toast.error(error.message)
+            // toast.error(error.message)
         }
         return false
     }
@@ -96,7 +98,7 @@ export const joinTeam = async (values) => {
             toast.error(error.response.data.msg)
         }
         else {
-            toast.error(error.message)
+            // toast.error(error.message)
         }
         return false
     }
@@ -115,7 +117,7 @@ export const getTeam = async (teamToken) => {
             toast.error(error.response.data.msg)
         }
         else {
-            toast.error(error.message)
+            // toast.error(error.message)
         }
     }
 }
@@ -133,7 +135,7 @@ export const getTaskContainers = async (postObj) => {
             toast.error(error.response.data.msg)
         }
         else {
-            toast.error(error.message)
+            // toast.error(error.message)
         }
     }
 }
