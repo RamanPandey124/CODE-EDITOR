@@ -21,19 +21,14 @@ export const userSignup = async (values) => {
     }
 }
 
-export const userLogin = async (values, signIn) => {
+export const userLogin = async (values, navigate) => {
     try {
         const { data } = await API.post('/auth/login', values)
         if (data.success) {
             toast.success(data.msg)
-            signIn({
-                auth: {
-                    token: data.token
-                }
-            })
-            setTimeout(() => {
-                window.location.replace('/')
-            }, (1000));
+            window.localStorage.setItem('accessToken', data.accessToken)
+            window.localStorage.setItem('refreshToken', data.refreshToken)
+            setTimeout(() => navigate('/'), 1000)
         }
 
     } catch (error) {
@@ -56,9 +51,11 @@ export const userProfile = async () => {
     catch (error) {
         if (error.response && error.response.data.msg) {
             toast.error(error.response.data.msg)
+            // console.log('not this')
         }
         else {
-            toast.error(error.message)
+            // console.log('this error tap')
+            // toast.error(error.message)
         }
         return 'error'
     }

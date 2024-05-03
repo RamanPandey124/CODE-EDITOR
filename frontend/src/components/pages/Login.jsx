@@ -4,14 +4,14 @@ import FormBox from '../reuseable/FormBox';
 import InputBox from '../reuseable/InputBox.jsx';
 import { logFormContent } from '@/assets/refrences/UiText'
 import { LoginFormSchema } from '@/assets/yup files/RegisterYup'
-import useSignIn from 'react-auth-kit/hooks/useSignIn'
 import { useState } from 'react';
 import { userLogin } from "@/services/AxiosApi"
 import Loader from '../singleUse/Loader';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-    const signIn = useSignIn()
     const [loading, setLoading] = useState(false)
+    const navigate = useNavigate()
 
     const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
         initialValues: {
@@ -21,7 +21,7 @@ const Login = () => {
         validationSchema: LoginFormSchema,
         onSubmit: async (values, action) => {
             setLoading(true)
-            await userLogin(values, signIn)
+            await userLogin(values, navigate)
             setLoading(false)
             action.resetForm()
         }

@@ -1,7 +1,6 @@
 import '/public/sass/singleuse/Header.scss';
 import { FaLaptopCode } from "react-icons/fa";
 import Logout from './Logout';
-import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated'
 import { useContext, useState } from 'react';
 import { CounterContext } from '@/contextApi/Context';
 import { Link } from 'react-router-dom';
@@ -17,7 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 
 const Header = () => {
-    const isAuthenticated = useIsAuthenticated()
+    const isAuthenticated = localStorage.getItem('accessToken')
     const { state } = useContext(CounterContext)
     const [isDark, setDark] = useState(true)
     const [isBar, setBar] = useState(false)
@@ -38,11 +37,11 @@ const Header = () => {
 
     return (
         <div className={`header ${headerBg}`}>
-            <div className={`headerTitle ${!isAuthenticated() && "headerAll"}`}>
+            <div className={`headerTitle ${!isAuthenticated && "headerAll"}`}>
                 <FaLaptopCode className='laptopIcon' />
                 <h6>CollabEditor</h6>
 
-                {isAuthenticated() ?
+                {isAuthenticated ?
                     <span className='quoteDisplay' onClick={() => setBar(!isBar)}>
                         {isBar ? <MdCancel className='riQuote ' /> : <RiQuoteText className='riQuote' />}
                     </span> :
@@ -52,7 +51,7 @@ const Header = () => {
                 }
             </div>
 
-            {isAuthenticated() && <div className={`headerBar ${isBar && "headerBarDisplay"}`}>
+            {isAuthenticated && <div className={`headerBar ${isBar && "headerBarDisplay"}`}>
                 <div className='userMenu'>
                     <div className='navbar'>
                         <Link to={'/'}>Home</Link>

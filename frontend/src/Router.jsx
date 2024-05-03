@@ -8,6 +8,7 @@ import Login from './components/pages/Login.jsx';
 import Home from './components/pages/Home.jsx';
 import LiveBlockEditor from './components/pages/LiveBlockEditor';
 import TaskManager from './components/pages/TaskManager';
+import ProtectedRoute from './services/ProtectedRoute';
 
 
 
@@ -24,11 +25,8 @@ const Router = () => {
                 <Route path='/login'
                     element={<PublicRoute><Login /></PublicRoute>}
                 />
-                <Route element={<AuthOutlet fallbackPath='/login' />}>
-                    <Route path='/' element={<Home />} />
-                    <Route path='/editor' element={<LiveBlockEditor />} />
-                    <Route path='/tasks' element={<TaskManager />} />
-                </Route>
+                <Route path='/' element={<ProtectedRoute><Home /></ProtectedRoute>} />
+                <Route path='/editor' element={<ProtectedRoute><LiveBlockEditor /></ProtectedRoute>} />
             </Routes>
         </>
     )

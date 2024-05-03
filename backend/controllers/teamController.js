@@ -38,7 +38,7 @@ const createTeam = async (req, res) => {
             { new: true }
         )
 
-        const teamToken = await generateAccessToken({ teamId: team._id }, '1yr')
+        const teamToken = await generateAccessToken({ teamId: team._id }, { expiresIn: '1yr' })
 
         return res.status(200).json({
             success: true,
@@ -86,7 +86,7 @@ const joinTeam = async (req, res) => {
             })
         }
 
-        const teamToken = await generateAccessToken({ teamId: team._id }, '1yr')
+        const teamToken = await generateAccessToken({ teamId: team._id }, { expiresIn: '1yr' })
         if (team.users.includes(userId)) {
             return res.status(200).json({
                 success: true,

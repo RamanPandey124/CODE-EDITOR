@@ -3,7 +3,6 @@ const bcrypt = require("bcrypt")
 const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Types;
 const userModel = require("../models/userModel");
-const teamModel = require("../models/teamModel");
 
 const generateAccessToken = require("../utils/generateToken")
 
@@ -77,11 +76,17 @@ const loginController = async (req, res) => {
             })
         }
 
-        const token = await generateAccessToken({ _id: userData._id },'1d')
+        const accessToken = await generateAccessToken({ _id: userData._id }, { expiresIn: '1m' })
+        const refreshToken = await generateAccessToken({ _id: userData._id }, { expiresIn: '5m' })
+
+        console.log('accessToken=>', accessToken)
+        console.log('refresh=>', refreshToken)
+        
         return res.status(200).json({
             success: true,
             msg: "Login successfully!",
-            token,
+            accessToken,
+            refreshToken,
             tokenType: 'Bearer'
         })
     }
@@ -103,7 +108,7 @@ const userProfile = async (req, res) => {
                 msg: 'user not exits',
             })
         }
-        
+
         if (!userData.teams.length) {
             return res.status(200).json({
                 success: true,
@@ -119,18 +124,18 @@ const userProfile = async (req, res) => {
                 }
             },
             {
-                $unwind: '$teams' // Unwind the teams array
+                $unwind: '$teams'
             },
             {
                 $lookup: {
-                    from: 'teams', // Name of the teammodel collection
+                    from: 'teams',
                     localField: 'teams',
                     foreignField: '_id',
                     as: 'teamData'
                 }
             },
             {
-                $unwind: '$teamData' // Unwind the teamData array
+                $unwind: '$teamData'
             },
             {
                 $group: {
@@ -143,7 +148,7 @@ const userProfile = async (req, res) => {
                             name: "$teamData.name",
                             users: "$teamData.users"
                         }
-                    } // Push teamData into teams array
+                    }
                 }
             },
             {
@@ -168,9 +173,39 @@ const userProfile = async (req, res) => {
     }
 }
 
+const refreshToken = async (req, res) => {
+    try {
+        const { _id } = req.user
+        // console.log('tap', _id)
+
+        const accessToken = await generateAccessToken({ _id }, { expiresIn: '1m' })
+        const refreshToken = await generateAccessToken({ _id }, { expiresIn: '5m' })
+
+        console.log('Updated_accessToken=>', accessToken)
+        console.log('Updated_refresh=>', refreshToken)
+
+        return res.status(200).json({
+            success: true,
+            msg: 'Token Refreshed',
+            accessToken,
+            refreshToken
+        })
+
+
+    }
+    catch (error) {
+        console.log(error)
+        return res.status(400).json({
+            success: false,
+            error,
+            msg: "Error in refresh token"
+        })
+    }
+}
 
 module.exports = {
     signupController,
     loginController,
-    userProfile
+    userProfile,
+    refreshToken
 }

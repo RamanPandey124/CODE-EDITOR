@@ -1,5 +1,4 @@
 import '/public/sass/singleuse/Logout.scss';
-import useSignOut from 'react-auth-kit/hooks/useSignOut';
 import { toast } from 'react-toastify'
 import { IoMdLogOut } from "react-icons/io";
 import Modal from './Modal';
@@ -7,12 +6,10 @@ import { useState } from 'react';
 
 
 const Logout = () => {
-    const sighOut = useSignOut()
     const [isModalOpen, setModalOpen] = useState(false)
 
     function handleLogout() {
-        sighOut()
-        window.localStorage.removeItem('teamToken')
+        window.localStorage.removeItem('accessToken')
         toast.error('Logout')
         setTimeout(() => {
             window.location.reload()
