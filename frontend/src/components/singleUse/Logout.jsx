@@ -9,10 +9,10 @@ const Logout = () => {
     const [isModalOpen, setModalOpen] = useState(false)
 
     function handleLogout() {
-        window.localStorage.removeItem('accessToken')
+        window.localStorage.clear()
         toast.error('Logout')
         setTimeout(() => {
-            window.location.reload()
+            window.location.rel,oad()
         }, 1000)
     }
     return (

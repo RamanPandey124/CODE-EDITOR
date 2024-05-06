@@ -56,8 +56,12 @@ API.interceptors.response.use(
             }
         }
 
+        if (error.response && error.response.data.msg) {
+            toast.error(error.response.data.msg)
+        } else {
+            toast.error(error.message)
+        }
         return error
-
     }
 )
 export default API

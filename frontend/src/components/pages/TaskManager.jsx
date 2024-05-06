@@ -27,33 +27,66 @@ const TaskManager = () => {
 
     const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
         initialValues: {
-            title: "",
-            description: ""
+            title: ""
         },
         onSubmit: async (values, action) => {
-            socket.emit('newTask', { ...values, selfContId }, postData.teamId)
-            setNew(false)
-            action.resetForm()
+            console.log(action);
+            // socket.emit('newTask', { ...values, selfContId }, postData.teamId)
+            // setNew(false)
+            // action.resetForm()
         }
     })
 
+    function SortContainer(container) {
+        for (let value of container) {
+            let tasks = value.tasks
+            tasks = tasks.sort((a, b) => {
+                if (a.index !== b.index) {
+                    return a.index - b.index
+                }
+                return new Date(a.updatedAt) - new Date(b.updatedAt);
+            })
+
+            value.tasks = tasks
+        }
+        return container
+    }
+
+    function handleDrop(elem) {
+        let { DropId, DropTaskId, dropTaskIndex } = elem
+        let { DragId, DragTaskId, dragTaskIndex } = dragElement
+
+        if (dropTaskIndex - dragTaskIndex == 1 || dropTaskIndex - dragTaskIndex == -1) {
+            let index = dropTaskIndex
+            dropTaskIndex = dragTaskIndex
+            dragTaskIndex = index
+        }
+        else if (!dropTaskIndex) {
+            dragTaskIndex = 0
+        }
+        else {
+            dragTaskIndex = dropTaskIndex
+            dropTaskIndex += 1
+        }
+
+        socket.emit('dropTask', { DropId, DragId, DropTaskId, DragTaskId, dropTaskIndex, dragTaskIndex }, postData.teamId)
+    }
 
     async function containerData() {
         const contArr = await getTaskContainers(postData)
         const selfCont = contArr.filter(obj => obj.user === state.user.name)[0];
         setSelfContId(selfCont._id)
-        setContainer(contArr)
+        setContainer(SortContainer(contArr))
     }
 
     function handleStart(elem) {
         setDragElement(elem)
     }
 
-    function handleDrop(elem) {
-        // if (dragElement != null && dragElement.DragId != elem.DropId) {
-            socket.emit('dropTask', { ...dragElement, ...elem }, postData.teamId)
-        // }
+    const fun = (data) => {
+        console.log(data)
     }
+
 
     function handleDelete(elem) {
         socket.emit('deleteTask', elem, postData.teamId)
@@ -62,7 +95,13 @@ const TaskManager = () => {
 
     useEffect(() => {
         socket.on('newTask', (container) => {
-            setContainer(container)
+            setContainer(SortContainer(container))
+        })
+
+        return (() => {
+            socket.off('dropTask')
+            socket.on('deleteTask')
+            socket.off('newTask')
         })
     }, [dragElement])
 
@@ -74,10 +113,13 @@ const TaskManager = () => {
             setCount(false)
         }
         return (() => {
+            socket.off('teamJoin')
             setCount(true)
         })
 
     }, [state.team])
+
+
 
     return (
         < WorkspaceWrapper >
@@ -87,6 +129,7 @@ const TaskManager = () => {
                     <form onSubmit={handleSubmit}>
                         <InputBox
                             name={'title'}
+                            focus
                             values={values.name}
                             placeholder={'title'}
                             onChange={handleChange}
@@ -134,8 +177,8 @@ const TaskContainer = ({ value, onDragStart, onDrop, onDelete }) => {
                         key={taskIndex}
                         className="child"
                         draggable
-                        onDragStart={() => onDragStart({ DragId: value._id, taskId: task._id })}
-                        onDrop={() => onDrop({ DropId: value._id, taskIndex })}
+                        onDragStart={() => onDragStart({ DragId: value._id, DragTaskId: task._id, dragTaskIndex: taskIndex })}
+                        onDrop={() => onDrop({ DropId: value._id, DropTaskId: task._id, dropTaskIndex: taskIndex })}
                     >
 
                         <div className="taskTitle">{task.title}</div>

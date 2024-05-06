@@ -73,19 +73,41 @@ const generateContainer = async teamId => {
                 as: "tasks",
             },
         },
-        {
-            $addFields: {
-                tasks: {
-                    $map: {
-                        input: "$containers.tasks",
-                        as: "taskId",
-                        in: {
-                            $arrayElemAt: ["$tasks", { $indexOfArray: ["$tasks._id", "$$taskId"] }]
-                        }
-                    }
-                }
-            }
-        },
+        // {
+        //     $addFields: {
+        //         tasks: {
+        //             $map: {
+        //                 input: "$containers.tasks",
+        //                 as: "taskId",
+        //                 in: {
+        //                     $arrayElemAt: ["$tasks", { $indexOfArray: ["$tasks._id", "$$taskId"] }]
+        //                 }
+        //             }
+        //         }
+        //     }
+        // },
+        // {
+        //     $addFields: {
+        //         tasks: {
+        //             $function: {
+        //                 body: function (tasks) {
+        //                     return tasks.sort((a, b) => {
+        //                         if (a.index !== b.index) {
+        //                             return a.index - b.index;
+        //                         } else {
+        //                             return (
+        //                                 new Date(a.updatedAt.$date) -
+        //                                 new Date(b.updatedAt.$date)
+        //                             );
+        //                         }
+        //                     });
+        //                 },
+        //                 args: ["$tasks"],
+        //                 lang: "js",
+        //             },
+        //         },
+        //     },
+        // },
         {
             $group: {
                 _id: "$_id",

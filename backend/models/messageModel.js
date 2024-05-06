@@ -8,7 +8,7 @@ const messageSchema = new mongoose.Schema(
         },
         senderId: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Team",
+            ref: "User",
         },
         msg: String
 

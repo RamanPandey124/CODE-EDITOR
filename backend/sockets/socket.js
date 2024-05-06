@@ -26,8 +26,8 @@ const socket = (server) => {
             socket.join(teamId)
         })
 
-        socket.on('newTask', async ({ title, description, selfContId }, teamId) => {
-            const newTask = await new taskModel({ title, description }).save()
+        socket.on('newTask', async ({ title, selfContId }, teamId) => {
+            const newTask = await new taskModel({ title }).save()
             await taskContainerModel.findByIdAndUpdate(
                 selfContId,
                 { $push: { tasks: newTask._id } },
@@ -39,15 +39,16 @@ const socket = (server) => {
 
 
         socket.on('dropTask', async (obj, teamId) => {
-            const { DragId, DropId, taskId, taskIndex } = obj
-            const index = taskIndex || 0
-            await taskContainerModel.findByIdAndUpdate(DragId, { $pull: { tasks: taskId } })
-            // await taskContainerModel.findByIdAndUpdate(DropId, { $push: { tasks: taskId } })
-            const DropContainer = await taskContainerModel.findById(DropId)
-            const tasks = DropContainer.tasks
-            tasks.splice(index, 0, taskId)
-            DropContainer.tasks = tasks
-            await DropContainer.save()
+            const { DropId, DragId, DropTaskId, DragTaskId, dropTaskIndex, dragTaskIndex } = obj
+
+            await taskContainerModel.findByIdAndUpdate(DragId, { $pull: { tasks: DragTaskId } })
+            await taskContainerModel.findByIdAndUpdate(DropId, { $push: { tasks: DragTaskId } })
+
+            await taskModel.findByIdAndUpdate(DragTaskId, { $set: { index: dragTaskIndex } })
+
+            if (dropTaskIndex !== 'undefined' && typeof dropTaskIndex == 'number') {
+                await taskModel.findByIdAndUpdate(DropTaskId, { $set: { index: dropTaskIndex } })
+            }
 
             io.to(teamId).emit('newTask', await generateContainer(teamId))
         })

@@ -65,22 +65,19 @@ const loginController = async (req, res) => {
         if (!userData) {
             return res.status(400).json({
                 success: false,
-                msg: "Email doesn't exists!"
+                msg: "Invalid credentials!"
             })
         }
         const isPassword = await bcrypt.compare(password, userData.password)
         if (!isPassword) {
             return res.status(400).json({
                 success: false,
-                msg: "Email and Password is incorrect"
+                msg: "Invalid credentials!"
             })
         }
 
         const accessToken = await generateAccessToken({ _id: userData._id }, { expiresIn: '6h' })
         const refreshToken = await generateAccessToken({ _id: userData._id }, { expiresIn: '24h' })
-
-        console.log('accessToken=>', accessToken)
-        console.log('refresh=>', refreshToken)
 
         return res.status(200).json({
             success: true,
