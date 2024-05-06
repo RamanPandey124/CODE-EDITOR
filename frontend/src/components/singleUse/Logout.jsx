@@ -12,7 +12,7 @@ const Logout = () => {
         window.localStorage.clear()
         toast.error('Logout')
         setTimeout(() => {
-            window.location.rel,oad()
+            window.location.reload()
         }, 1000)
     }
     return (

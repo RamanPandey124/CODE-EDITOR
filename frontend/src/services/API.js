@@ -24,6 +24,11 @@ API.interceptors.response.use(
 
         const originalRequest = error.config
 
+        if (!error.response) {
+            toast.error(error.message)
+            return error
+        }
+
         if (error.response.status === 403 && !isRefreshed) {
             isRefreshed = true
             try {
@@ -58,9 +63,8 @@ API.interceptors.response.use(
 
         if (error.response && error.response.data.msg) {
             toast.error(error.response.data.msg)
-        } else {
-            toast.error(error.message)
         }
+
         return error
     }
 )

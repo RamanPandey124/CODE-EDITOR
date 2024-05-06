@@ -5,12 +5,10 @@ import { useFormik } from "formik";
 import { joinTeamSchema } from "@/assets/yup files/RegisterYup.js";
 import { joinTeam } from "@/services/AxiosApi"
 import Loader from "../singleUse/Loader";
-import { useNavigate } from "react-router-dom";
 
 
 const JoinTeam = ({ isModalOpen, onClose, name = "", current }) => {
     const [loading, setLoading] = useState(false)
-    const navigate = useNavigate()
 
 
     const initialValues = {
@@ -43,6 +41,7 @@ const JoinTeam = ({ isModalOpen, onClose, name = "", current }) => {
             <form onSubmit={handleSubmit}>
                 <h2>Join a team</h2>
                 <InputBox
+                    focus
                     name={'name'}
                     placeholder={'Team name'}
                     values={values.name}

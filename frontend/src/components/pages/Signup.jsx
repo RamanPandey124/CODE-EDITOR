@@ -35,6 +35,7 @@ const Signup = () => {
             <FormBox content={signupContent}>
                 <form onSubmit={handleSubmit}>
                     <InputBox
+                        focus
                         name={'name'}
                         placeholder={'Username'}
                         values={values.name}

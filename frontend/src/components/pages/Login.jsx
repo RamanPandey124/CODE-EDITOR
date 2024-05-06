@@ -33,6 +33,7 @@ const Login = () => {
             <FormBox content={logFormContent}>
                 <form onSubmit={handleSubmit}>
                     <InputBox
+                        focus
                         name={'email'}
                         placeholder={'Email'}
                         values={values.email}

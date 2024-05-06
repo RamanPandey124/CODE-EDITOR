@@ -49,13 +49,14 @@ const CreateTeam = ({ className, title }) => {
     return (
         <div >
             <div className={className} onClick={() => setIsModalOpen(true)}>
-                <p><MdCreateNewFolder className="headerIcon"/> {title}</p>
+                <p><MdCreateNewFolder className="headerIcon" /> {title}</p>
             </div>
 
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
                 <form onSubmit={handleSubmit}>
                     <h2>Create new team</h2>
                     <InputBox
+                        focus
                         name={'name'}
                         placeholder={'Team name'}
                         values={values.name}
