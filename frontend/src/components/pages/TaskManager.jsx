@@ -5,7 +5,6 @@ import { CounterContext } from "@/contextApi/Context"
 import { getTaskContainers } from "@/services/AxiosApi"
 import socket from "@/sockets/Socket"
 import { useFormik } from "formik"
-import { createTaskSchema } from "@/assets/yup files/RegisterYup"
 import InputBox from "../reuseable/InputBox"
 import Modal from "../singleUse/Modal"
 import { IoIosCreate } from "react-icons/io";
@@ -30,10 +29,9 @@ const TaskManager = () => {
             title: ""
         },
         onSubmit: async (values, action) => {
-            console.log(action);
-            // socket.emit('newTask', { ...values, selfContId }, postData.teamId)
-            // setNew(false)
-            // action.resetForm()
+            socket.emit('newTask', { ...values, selfContId }, postData.teamId)
+            setNew(false)
+            action.resetForm()
         }
     })
 
@@ -81,10 +79,6 @@ const TaskManager = () => {
 
     function handleStart(elem) {
         setDragElement(elem)
-    }
-
-    const fun = (data) => {
-        console.log(data)
     }
 
 
@@ -209,21 +203,3 @@ export default TaskManager
 
 
 
-
-
-
-
-
-
-
-// function handleStart(elem) {
-//     setDragElement(elem)
-// }
-
-// function handleDrop(elem) {
-//     if (dragElement != null) {
-//         const element = containers[dragElement.DragIndex]?.child.splice(dragElement.childIndex, 1)
-//         containers[elem]?.child.push(...element)
-//     }
-//     setContainer([...containers])
-// }
