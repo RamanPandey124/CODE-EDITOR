@@ -22,13 +22,13 @@ const Teams = ({ teamList }) => {
                 <div className="teamSearch">
                     {search ?
                         <>
-                            <FaSearchMinus className="faSearch faMinus" onClick={() => setSearch(false)} />
+                            <FaSearchMinus id="faSearchMinus" className="faSearch faMinus" onClick={() => setSearch(false)} />
                             <input
                                 type="text"
                                 placeholder="search team"
                                 onChange={(e) => searchTeam(e.target.value)}
                             />
-                        </> : <FaSearch className="faSearch" onClick={() => setSearch(true)} />
+                        </> : <FaSearch id="faSearch" className="faSearch" onClick={() => setSearch(true)} />
                     }
                 </div>
             </div>

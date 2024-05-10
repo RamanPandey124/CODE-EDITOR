@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react"
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 
-const InputBox = ({ name, type, placeholder, values, onChange, onBlur, errors, touched, focus=false }) => {
+const InputBox = ({ name, type, placeholder, values, onChange, onBlur, errors, touched, focus = false }) => {
     const { inputBorder } = useSelector((state) => state.theme)
     const inputRef = useRef(null)
     const [hide, setHide] = useState(false)
@@ -35,9 +35,10 @@ const InputBox = ({ name, type, placeholder, values, onChange, onBlur, errors, t
                     className={inputBorder}
                 />
                 {hide && <span
+                    id='passIconSpan'
                     className={`eye`}
                     onClick={(e) => { e.preventDefault(); setPass(!isPass) }}>
-                    {!isPass ? <FaRegEye /> : <FaRegEyeSlash />}
+                    {!isPass ? <FaRegEye id='textIcon' /> : <FaRegEyeSlash id='passIcon' />}
                 </span>}
                 {(errors && touched) ?
                     <p style={{ color: 'red' }}>{errors}</p> : null}

@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 
 const Header = () => {
-    const isAuthenticated = localStorage.getItem('accessToken')
+    const isAuthenticated = localStorage.getItem('accessToken') ? true : false
     const { state } = useContext(CounterContext)
     const [isDark, setDark] = useState(true)
     const [isBar, setBar] = useState(false)
@@ -35,6 +35,7 @@ const Header = () => {
     }
 
 
+
     return (
         <div className={`header ${headerBg}`}>
             <div className={`headerTitle ${!isAuthenticated && "headerAll"}`}>
@@ -42,16 +43,16 @@ const Header = () => {
                 <h6>CollabEditor</h6>
 
                 {isAuthenticated ?
-                    <span className='quoteDisplay' onClick={() => setBar(!isBar)}>
+                    <span id='quoteDisplay' className='quoteDisplay' onClick={() => setBar(!isBar)}>
                         {isBar ? <MdCancel className='riQuote ' /> : <RiQuoteText className='riQuote' />}
                     </span> :
-                    <div className={`unAuthTheme`} onClick={handleTheme}>
+                    <div id='unAuthTheme' className={`unAuthTheme`} onClick={handleTheme}>
                         {isDark ? <MdLightMode className='headerIcon' /> : <MdDarkMode className='headerIcon' />}
                     </div>
                 }
             </div>
 
-            {isAuthenticated && <div className={`headerBar ${isBar && "headerBarDisplay"}`}>
+            {isAuthenticated && <div id="headerBar" className={`headerBar ${isBar && "headerBarDisplay"}`}>
                 <div className='userMenu'>
                     <div className='navbar'>
                         <Link to={'/'}>Home</Link>

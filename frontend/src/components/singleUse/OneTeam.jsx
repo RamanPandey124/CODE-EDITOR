@@ -12,7 +12,7 @@ const OneTeam = ({ team }) => {
             <FontAwesomeIcon icon={randomIcon} className="fontAwesome" />
             <h2>{team.name}</h2>
             <hr />
-            <p>{team.users.length} Users</p>
+            <p>{team.users?.length} Users</p>
             <button className="createbtn joinbtn" onClick={() => setModelOpen(true)}>join now</button>
             <JoinTeam isModalOpen={isModalOpen} onClose={() => setModelOpen(false)} name={team.name} />
         </div>

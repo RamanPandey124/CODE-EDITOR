@@ -1,8 +1,7 @@
-
 import React, { createContext, useReducer } from 'react';
+import { intialState, counterReducer } from './Reducer'
 
 export const CounterContext = createContext();
-import { intialState, counterReducer } from './Reducer'
 
 
 export const CounterProvider = ({ children }) => {

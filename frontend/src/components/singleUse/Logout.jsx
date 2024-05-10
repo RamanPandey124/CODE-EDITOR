@@ -11,6 +11,7 @@ const Logout = () => {
     function handleLogout() {
         window.localStorage.clear()
         toast.error('Logout')
+        setModalOpen(false)
         setTimeout(() => {
             window.location.reload()
         }, 1000)

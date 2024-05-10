@@ -40,6 +40,12 @@ const CreateTeam = ({ className, title }) => {
     })
 
     useEffect(() => {
+        socket.connect()
+        return () => {
+            socket.disconnect()
+        }
+    }, [])
+    useEffect(() => {
         return () => {
             setValues(initialValues)
             setTeamExist(false)
@@ -65,7 +71,7 @@ const CreateTeam = ({ className, title }) => {
                         errors={errors.name}
                         touched={touched.name}
                     />
-                    {isTeamExist && <p style={{ color: 'red', position: 'relative', bottom: '12px', height: '10px', width: '12rem' }}>team name already exist, try another</p>}
+                    {isTeamExist && <p style={{ color: 'red', position: 'relative', bottom: '12px', height: '10px', width: '12rem' }}>team already exist!</p>}
                     <InputBox
                         type={'password'}
                         name={'password'}

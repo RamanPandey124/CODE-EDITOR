@@ -2,7 +2,6 @@ import "public/sass/pages/Home.scss"
 import { useContext, useEffect, useState } from 'react'
 import Profile from '@/assets/images/profile.png'
 import { userProfile } from '@/services/AxiosApi';
-import socket from "@/sockets/Socket";
 import Loader from "../singleUse/Loader";
 import Teams from "../singleUse/Teams";
 import { CounterContext } from "@/contextApi/Context";
@@ -23,7 +22,6 @@ const Home = () => {
     useEffect(() => {
         userData()
     }, [])
-    socket.connect()
 
     if (user == null) {
         return <Loader position={'absolute'} all={true} />

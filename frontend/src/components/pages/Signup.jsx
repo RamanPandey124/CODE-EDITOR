@@ -80,6 +80,7 @@ const Signup = () => {
                         type='submit'
                     >{loading ? <Loader /> : 'signup'}</button>
                 </form>
+                {loading && <p>loading occur</p>}
             </FormBox>
         </div>
     )
