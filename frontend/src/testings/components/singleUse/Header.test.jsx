@@ -18,9 +18,10 @@ describe("testing header component with accessToken", () => {
         localStorage.setItem("accessToken", "This-is-my-accessToken")
     })
 
-    test("check header with accessToken", () => {
-        renderWithProviders(<Header />)
+    test("check identityBar with customContext", () => {
+        renderWithProviders(<Header />, { user: { name: 'testUser' } })
 
-        // screen.debug()
+        expect(screen.queryByTestId("quoteDisplay")).toBeInTheDocument()
+        expect(screen.getByText(/testUser/)).toBeInTheDocument()
     })
 })

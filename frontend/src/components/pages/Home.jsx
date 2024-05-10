@@ -13,10 +13,12 @@ const Home = () => {
 
     async function userData() {
         const userData = await userProfile()
-        setUser(userData)
-        if (userData !== 'error') {
-            dispatch({ type: 'USER', value: userData })
+
+        if (!userData) {
+            return setUser({})
         }
+        setUser(userData)
+        dispatch({ type: 'USER', value: userData })
     }
 
     useEffect(() => {
