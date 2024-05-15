@@ -26,8 +26,8 @@ const socket = (server) => {
             socket.join(teamId)
         })
 
-        socket.on('newTask', async ({ title, selfContId }, teamId) => {
-            const newTask = await new taskModel({ title }).save()
+        socket.on('newTask', async ({ title, selfContId, index }, teamId) => {
+            const newTask = await new taskModel({ title, index }).save()
             await taskContainerModel.findByIdAndUpdate(
                 selfContId,
                 { $push: { tasks: newTask._id } },

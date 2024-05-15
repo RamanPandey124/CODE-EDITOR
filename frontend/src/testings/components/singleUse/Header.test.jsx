@@ -4,7 +4,7 @@ import Header from "@/components/singleUse/Header";
 
 describe("testing Header component", () => {
 
-    test.skip("check header without accessToken", () => {
+    test("check header without accessToken", () => {
         renderWithProviders(<Header />)
         expect(screen.getByTestId('unAuthTheme')).toBeInTheDocument()
         expect(screen.queryByTestId('quoteDisplay')).not.toBeInTheDocument()

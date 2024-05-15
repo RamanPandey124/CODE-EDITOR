@@ -8,7 +8,7 @@ const taskSchema = new mongoose.Schema({
     // description: String,
     index: {
         type: Number,
-        default: 0
+        // default: 0
     }
 }, {
     timestamps: true
