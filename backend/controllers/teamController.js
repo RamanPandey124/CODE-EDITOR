@@ -22,7 +22,6 @@ const createTeam = async (req, res) => {
         }
         const { name, password } = req.body
         const userId = req.user._id
-        // console.log(name, password, userId)
 
         const hashPassword = await bcrypt.hash(password, 10)
         const teamData = new teamModel({

@@ -5,13 +5,13 @@ import { userProfile } from "@/services/AxiosApi"
 
 
 vi.mock('@/services/AxiosApi', () => ({
-    userProfile: vi.fn().mockReturnValue(null).mockReturnValueOnce(
+    userProfile: vi.fn().mockResolvedValueOnce(
         {
             _id: 'userId',
             name: 'testUser',
             email: 'testUser@email.com'
         }
-    )
+    ).mockResolvedValueOnce(null)
 }))
 
 

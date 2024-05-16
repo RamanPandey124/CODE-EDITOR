@@ -1,15 +1,17 @@
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, test, vi } from "vitest";
 import TaskManager from "@/components/pages/TaskManager";
-import { getTaskContainers, getTeam, joinTeam } from "@/services/AxiosApi";
-import { createEvent, fireEvent, renderWithProviders, screen, waitFor } from "@/testings/utils/test-utils";
+import { getTaskContainers, getTeam } from "@/services/AxiosApi";
+import { act, fireEvent, renderWithProviders, screen, waitFor } from "@/testings/utils/test-utils";
 import userEvent from "@testing-library/user-event";
-import { afterEach, beforeAll, beforeEach, describe, expect, test, vi } from "vitest";
 import socket from "@/sockets/Socket";
-import { DropFunc, SortContainer } from "@/assets/handlers/TaskHandler";
+import { DropFunc } from "@/assets/handlers/TaskHandler";
 
-vi.mock('@/assets/handlers/TaskHandler', () => {
+vi.mock('@/assets/handlers/TaskHandler', async (importOriginal) => {
+    const actual = await importOriginal()
+
     return {
-        DropFunc: vi.fn(),
-        SortContainer: vi.fn((a) => a),
+        ...actual,
+        DropFunc: vi.fn()
     }
 })
 
@@ -18,17 +20,17 @@ vi.mock('@/services/AxiosApi', () => ({
     getTeam: vi.fn().mockReturnValue(
         {
             team: {
-                _id: 'c3cb',
+                _id: 'teamId',
                 TeamName: 'testTeam',
                 users: [
-                    { _id: '72cb', name: 'userA' },
-                    { _id: 'd6b5', name: 'userB' },
-                    { _id: '769f', name: 'userC' }
+                    { _id: 'userA_id', name: 'userA' },
+                    { _id: 'userA_id', name: 'userB' },
+                    { _id: 'userA_id', name: 'userC' }
 
                 ],
             },
             user: {
-                _id: '72cb',
+                _id: 'userA_id',
                 name: 'user A'
             }
         }
@@ -54,16 +56,20 @@ afterEach(() => {
     DropFunc.mockClear()
 })
 
+afterAll(() => {
+    vi.clearAllMocks()
+})
+
 describe("testing taskManager component", () => {
     const container = [
-        { _id: '0502', user: 'user A', tasks: [] },
-        { _id: '0506', user: 'user B', tasks: [] },
-        { _id: '050a', user: 'user C', tasks: [] }
+        { _id: 'userA_Id', user: 'user A', tasks: [] },
+        { _id: 'userB_Id', user: 'user B', tasks: [] },
+        { _id: 'userC_Id', user: 'user C', tasks: [] }
     ]
     beforeEach(async () => {
         getTaskContainers.mockReturnValueOnce(container)
         renderWithProviders(<TaskManager />)
-        await waitFor(() => getTeam())
+        await waitFor(() => expect(getTeam))
         await waitFor(() => expect(getTaskContainers).toHaveBeenCalled())
     })
 
@@ -76,7 +82,7 @@ describe("testing taskManager component", () => {
 
     test("check room join", () => {
         expect(socket.connect).toHaveBeenCalled()
-        expect(socket.emit).toHaveBeenCalledWith('teamJoin', "c3cb")
+        expect(socket.emit).toHaveBeenCalledWith('teamJoin', "teamId")
     })
 
     test("create new task", async () => {
@@ -89,10 +95,10 @@ describe("testing taskManager component", () => {
             'newTask',
             {
                 index: 0,
-                selfContId: "0502",
+                selfContId: "userA_Id",
                 title: "task A"
             }
-            , "c3cb"
+            , "teamId"
         )
     })
 
@@ -128,12 +134,10 @@ describe("testing drag and drop", () => {
     beforeEach(async () => {
         getTaskContainers.mockReturnValueOnce(container)
         renderWithProviders(<TaskManager />)
-        await waitFor(() => getTeam())
         await waitFor(() => expect(getTaskContainers).toHaveBeenCalled())
     })
 
     test("test dragStart and drop within container", async () => {
-
         fireEvent.dragStart(screen.getByText(/task A/i))
         fireEvent.drop(screen.getByText(/task B/i))
 
@@ -146,7 +150,7 @@ describe("testing drag and drop", () => {
                 dragTaskIndex: 0,
                 dropTaskIndex: 1,
             },
-            "c3cb",
+            "teamId",
         )
     })
 
@@ -168,3 +172,4 @@ describe("testing drag and drop", () => {
 
 
 })
+

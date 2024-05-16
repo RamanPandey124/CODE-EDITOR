@@ -1,11 +1,10 @@
 import { CounterContext } from "@/contextApi/Context"
 import { useContext } from "react"
 import { MdDelete } from "react-icons/md";
-
+import { handleContainerInstance } from "@/assets/handlers/TaskHandler";
 
 const TaskContainer = ({ value, onDragStart, onDrop, onDelete }) => {
     const { state } = useContext(CounterContext)
-
 
     return (
         <div>
@@ -14,7 +13,7 @@ const TaskContainer = ({ value, onDragStart, onDrop, onDelete }) => {
             <div
                 id={value._id}
                 className="original"
-                onDragOver={(e) => e.preventDefault()}
+                onDragOver={handleContainerInstance}
                 onDrop={() => { !value.tasks.length && onDrop({ DropId: value._id }) }}
             >
                 {value?.tasks?.map((task, taskIndex) => {
